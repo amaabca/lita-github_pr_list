@@ -32,7 +32,7 @@ module Lita
     private
       def get_pull_requests
         # Grab the issues and sort out the pull request issues
-        issues = github_client.org_issues('amaabca', {filter: 'all', sort:'created'})
+        issues = github_client.org_issues(ENV['GITHUB_ORG'], { filter: 'all', sort: 'created' })
 
         issues.each do |i|
           github_pull_requests << i if i.pull_request
@@ -40,7 +40,7 @@ module Lita
       end
 
       def build_summary
-        self.summary = "I found #{github_pull_requests.count} open pull requests for 'amaabca'"
+        self.summary = "I found #{github_pull_requests.count} open pull requests for #{ENV['GITHUB_ORG']}"
 
         github_pull_requests.each do |pr_issue|
           status = repo_status("#{pr_issue.repository.full_name}", pr_issue.number)
@@ -48,12 +48,12 @@ module Lita
         end
       end
 
-      def repo_status(repo_name, issue_number)
-        status = ""
-        comments = github_client.issue_comments(repo_name, issue_number, { direction: 'asc', sort:'created' })
+      def repo_status(repo_full_name, issue_number)
+        status = nil
+        comments = github_client.issue_comments(repo_full_name, issue_number, { direction: 'asc', sort: 'created' })
 
         if !comments.empty?
-          comments.each do |  c|
+          comments.each do |c|
             body = c.body
             if body =~ pass_regex
               status = "(elephant)(elephant)(elephant)"
@@ -65,11 +65,9 @@ module Lita
               status = "(wave)"
             end
           end
-        else
-          status = "(new)"
         end
 
-        status
+        status ||= "(new)"
       end
     end
 
