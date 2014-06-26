@@ -49,25 +49,27 @@ module Lita
       end
 
       def repo_status(repo_full_name, issue_number)
-        status = nil
+        status = "(new)"
         comments = github_client.issue_comments(repo_full_name, issue_number, { direction: 'asc', sort: 'created' })
 
         if !comments.empty?
           comments.each do |c|
             body = c.body
-            if body =~ pass_regex
+
+            case body
+            when pass_regex
               status = "(elephant)(elephant)(elephant)"
-            elsif body =~ review_regex
+            when review_regex
               status = "(book)"
-            elsif body =~ fail_regex
+            when fail_regex
               status = "(poop)"
-            elsif body =~ fixed_regex
+            when fixed_regex
               status = "(wave)"
             end
           end
         end
 
-        status ||= "(new)"
+        status
       end
     end
 

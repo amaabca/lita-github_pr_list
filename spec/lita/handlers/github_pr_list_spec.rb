@@ -7,11 +7,10 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
   end
 
   let(:agent) do
-    agent = Sawyer::Agent.new "http://foo.com/a/" do |conn|
+    Sawyer::Agent.new "http://foo.com/a/" do |conn|
       conn.builder.handlers.delete(Faraday::Adapter::NetHttp)
       conn.adapter :test, Faraday::Adapter::Test::Stubs.new
     end
-    agent
   end
 
   def sawyer_resource_array(file_path)
