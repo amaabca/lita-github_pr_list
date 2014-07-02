@@ -12,6 +12,19 @@ module Lita
         "pr list" => "List open pull requests for an organization."
       })
 
+      http.get "/comment_hook", :comment_hook
+
+      def comment_hook(request, response)
+        rooms = Lita.config.adapter.rooms
+        rooms ||= [:all]
+        rooms.each do |room|
+          target = Source.new(room: room)
+          robot.send_message(target, 'test11111')
+        end
+
+        response.body << "Nothing to see here..."
+      end
+
       def initialize(robot)
         super
         self.github_client = Octokit::Client.new(access_token: ENV['GITHUB_TOKEN'], auto_paginate: true)
