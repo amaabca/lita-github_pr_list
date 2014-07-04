@@ -2,7 +2,6 @@ require "lita"
 require "octokit"
 require "hashie"
 require "json"
-require "yaml"
 
 module Lita
   module Handlers
