@@ -114,4 +114,11 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
 
     expect(replies.last).to include("Spelling error in the README file has been fixed: https://github.com/baxterthehacker/public-repo/issues/47")
   end
+
+  it "should map the github name to the hipchat username (mention)" do
+    send_command("pr alias user mcwaffle mcrib")
+
+    expect(replies.last).to include("Mapped mcwaffle to mcrib")
+    expect(subject.redis.get("alias:mcwaffle")).to include("mcrib")
+  end
 end

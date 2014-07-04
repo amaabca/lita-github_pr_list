@@ -13,6 +13,10 @@ module Lita
         "pr list" => "List open pull requests for an organization."
       })
 
+      route(/pr alias user (\w*) (\w*)/i, :alias_user, command: true, help: {
+        "pr alias user <Github Username> <Hipchat Username>" => "Create an alias to match a Github username to a Hipchat Username."
+      })
+
       http.post "/comment_hook", :comment_hook
 
       def initialize(robot)
@@ -28,8 +32,14 @@ module Lita
         response.reply summary
       end
 
+      def alias_user(response)
+        github_username, hipchat_username = response.matches.first[0], response.matches.first[1]
+        redis.set("alias:#{github_username}", hipchat_username)
+        response.reply "Mapped #{github_username} to #{hipchat_username}"
+      end
+
       def comment_hook(request, response)
-        message = Lita::GithubPrList::CommentHook.new({ request: request, response: response }).message
+        message = Lita::GithubPrList::CommentHook.new({ request: request, response: response, redis: redis }).message
 
         rooms = Lita.config.adapter.rooms
         rooms ||= [:all]
