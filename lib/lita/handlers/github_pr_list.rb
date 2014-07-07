@@ -1,6 +1,5 @@
 require "lita"
 require "octokit"
-require "hashie"
 require "json"
 
 module Lita
