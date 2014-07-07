@@ -1,25 +1,26 @@
 require "lita"
 require "octokit"
-require "hashie"
+require "json"
 
 module Lita
   module Handlers
     class GithubPrList < Handler
       attr_accessor :github_client, :organization_repos, :github_pull_requests, :summary
-      attr_accessor :pass_regex, :review_regex, :fail_regex, :fixed_regex
 
       route(/pr list/i, :list_org_pr, command: true, help: {
         "pr list" => "List open pull requests for an organization."
       })
 
+      route(/pr alias user (\w*) (\w*)/i, :alias_user, command: true, help: {
+        "pr alias user <Github Username> <Hipchat Username>" => "Create an alias to match a Github username to a Hipchat Username."
+      })
+
+      http.post "/comment_hook", :comment_hook
+
       def initialize(robot)
         super
         self.github_client = Octokit::Client.new(access_token: ENV['GITHUB_TOKEN'], auto_paginate: true)
         self.github_pull_requests = []
-        self.pass_regex = /:elephant: :elephant: :elephant:/
-        self.review_regex = /:book:/
-        self.fail_regex = /:poop:/
-        self.fixed_regex = /:wave:/
       end
 
       def list_org_pr(response)
@@ -27,6 +28,25 @@ module Lita
         build_summary
 
         response.reply summary
+      end
+
+      def alias_user(response)
+        github_username, hipchat_username = response.matches.first[0], response.matches.first[1]
+        redis.set("alias:#{github_username}", hipchat_username)
+        response.reply "Mapped #{github_username} to #{hipchat_username}"
+      end
+
+      def comment_hook(request, response)
+        message = Lita::GithubPrList::CommentHook.new({ request: request, response: response, redis: redis }).message
+
+        rooms = Lita.config.adapter.rooms
+        rooms ||= [:all]
+        rooms.each do |room|
+          target = Source.new(room: room)
+          robot.send_message(target, message) unless message.nil?
+        end
+
+        response.body << "Nothing to see here..."
       end
 
     private
@@ -49,27 +69,16 @@ module Lita
       end
 
       def repo_status(repo_full_name, issue_number)
-        status = "(new)"
         comments = github_client.issue_comments(repo_full_name, issue_number, { direction: 'asc', sort: 'created' })
 
+        status = { emoji: "(new)", status: "New" }
         if !comments.empty?
           comments.each do |c|
-            body = c.body
-
-            case body
-            when pass_regex
-              status = "(elephant)(elephant)(elephant)"
-            when review_regex
-              status = "(book)"
-            when fail_regex
-              status = "(poop)"
-            when fixed_regex
-              status = "(wave)"
-            end
+            status = Lita::GithubPrList::Status.new({comment: c.body, status: status}).comment_status
           end
         end
 
-        status
+        status[:emoji]
       end
     end
 
