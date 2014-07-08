@@ -6,7 +6,7 @@ module Lita
       def initialize(params)
         self.response = params.fetch(:response, nil)
         self.redis = params.fetch(:redis, nil)
-        raise 'invalid params' if response.nil? || redis.nil?
+        raise "invalid params in #{self.class.name}" if response.nil? || redis.nil?
       end
 
       def create_alias

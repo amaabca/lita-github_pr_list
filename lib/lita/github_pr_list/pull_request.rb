@@ -12,7 +12,7 @@ module Lita
         self.github_organization = params.fetch(:github_organization, nil)
         self.github_pull_requests = []
 
-        raise 'invalid params' if response.nil? || github_token.nil? || github_organization.nil?
+        raise "invalid params in #{self.class.name}" if response.nil? || github_token.nil? || github_organization.nil?
 
         self.github_client = Octokit::Client.new(access_token: github_token, auto_paginate: true)
       end

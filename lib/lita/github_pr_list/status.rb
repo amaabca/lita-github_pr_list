@@ -18,7 +18,7 @@ module Lita
         self.comment = params.fetch(:comment, nil)
         self.status = params.fetch(:status, {})
 
-        raise 'invalid params' if comment.nil?
+        raise "invalid params in #{self.class.name}" if comment.nil?
       end
 
       def comment_status
