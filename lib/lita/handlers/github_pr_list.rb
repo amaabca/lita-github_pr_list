@@ -31,9 +31,7 @@ module Lita
       end
 
       def alias_user(response)
-        github_username, hipchat_username = response.matches.first[0], response.matches.first[1]
-        redis.set("alias:#{github_username}", hipchat_username)
-        response.reply "Mapped #{github_username} to #{hipchat_username}"
+        Lita::GithubPrList::AliasUser.new({ response:response, redis: redis }).create_alias
       end
 
       def comment_hook(request, response)
