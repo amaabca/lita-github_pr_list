@@ -18,9 +18,14 @@ Or install it yourself as:
 
 ## Configuration
 
-Set ```ENV['GITHUB_TOKEN']``` and ```ENV['GITHUB_ORG']```
-
-Such as: ```ENV['GITHUB_TOKEN'] = 'oauthtoken'``` and ```ENV['GITHUB_ORG'] = amaabca``` - Or just put it in your .env if you're using foreman.
+```
+Lita.configure do |config|
+...
+  config.handlers.github_pr_list.github_organization = ENV['GITHUB_ORG']
+  config.handlers.github_pr_list.github_access_token = ENV['GITHUB_TOKEN']
+...
+end
+```
 
 ## Usage
 
@@ -29,13 +34,16 @@ Such as: ```ENV['GITHUB_TOKEN'] = 'oauthtoken'``` and ```ENV['GITHUB_ORG'] = ama
 All of the open pull requests for an organization will get listed out from lita. If it has one of the emoji statuses below it
 will display it, otherwise it will display :new:.
 
+
+
+
 ## Emoji status
 
-New - :new: - This is the default state, shown (new) if none of the other states are set.  
-Pass - :elephant: :elephant: :elephant: = (elephant)(elephant)(elephant)  
-In Review - :book: = (book)  
-Fail - :poop: = (poop)  
-Fixed - :wave:  = (wave)  
+New - :new: - This is the default state, shown (new) if none of the other states are set.
+Pass - :elephant: :elephant: :elephant: = (elephant)(elephant)(elephant)
+In Review - :book: = (book)
+Fail - :poop: = (poop)
+Fixed - :wave:  = (wave)
 
 ## Contributing
 
