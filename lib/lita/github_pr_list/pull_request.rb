@@ -39,21 +39,23 @@ module Lita
 
         github_pull_requests.each do |pr_issue|
           status = repo_status("#{pr_issue.repository.full_name}", pr_issue.number)
-          self.summary = summary + "\n#{pr_issue.repository.name} #{status} #{pr_issue.title} #{pr_issue.pull_request.html_url}"
+          self.summary += "\n#{pr_issue.repository.name} #{status} #{pr_issue.title} #{pr_issue.pull_request.html_url}"
         end
       end
 
       def repo_status(repo_full_name, issue_number)
-        comments = github_client.issue_comments(repo_full_name, issue_number, { direction: 'asc', sort: 'created' })
-
         status = { emoji: "(new)", status: "New" }
-        if !comments.empty?
-          comments.each do |c|
-            status = Lita::GithubPrList::Status.new({ comment: c.body, status: status }).comment_status
-          end
+
+        comments(repo_full_name, issue_number).each do |c|
+          status = Lita::GithubPrList::Status.new({ comment: c.body, status: status }).comment_status
         end
 
         status[:emoji]
+      end
+
+      def comments(repo_full_name, issue_number, options = nil)
+        github_options = options || { direction: 'asc', sort: 'created' }
+        github_client.issue_comments(repo_full_name, issue_number, github_options)
       end
     end
   end
