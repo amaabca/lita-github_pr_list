@@ -1,0 +1,8 @@
+LineLength:
+  Max: 130
+
+StringLiterals:
+  Enabled: false
+
+EmptyLinesAroundBody:
+  Enabled: false

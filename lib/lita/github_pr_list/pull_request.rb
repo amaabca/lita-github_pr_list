@@ -47,7 +47,7 @@ module Lita
         status = { emoji: "(new)", status: "New" }
 
         comments(repo_full_name, issue_number).each do |c|
-          status = Lita::GithubPrList::Status.new({ comment: c.body, status: status }).comment_status
+          status = Lita::GithubPrList::Status.new(comment: c.body, status: status).comment_status
         end
 
         status[:emoji]
