@@ -1,8 +1,8 @@
 module Lita
   module GithubPrList
     class Status
-      attr_accessor :comment, :status
-      attr_accessor :pass_regex, :review_regex, :fail_regex, :fixed_regex
+      attr_accessor :comment, :status,
+                    :pass_regex, :review_regex, :fail_regex, :fixed_regex
 
       PASS_REGEX = /:elephant: :elephant: :elephant:/
       REVIEW_REGEX = /:book:/
