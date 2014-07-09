@@ -6,7 +6,7 @@ module Lita
       attr_accessor :organization, :github_client, :github_organization, :github_pull_requests,
                     :summary, :response
 
-      def initialize(params)
+      def initialize(params = {})
         self.response = params.fetch(:response, nil)
         github_token = params.fetch(:github_token, nil)
         self.github_organization = params.fetch(:github_organization, nil)

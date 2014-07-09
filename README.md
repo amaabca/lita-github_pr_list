@@ -34,9 +34,6 @@ end
 All of the open pull requests for an organization will get listed out from lita. If it has one of the emoji statuses below it
 will display it, otherwise it will display :new:.
 
-
-
-
 ## Emoji status
 
 New - :new: - This is the default state, shown (new) if none of the other states are set.

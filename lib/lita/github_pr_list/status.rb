@@ -14,7 +14,7 @@ module Lita
       FAIL_EMOJI = "(poop)"
       FIXED_EMOJI = "(wave)"
 
-      def initialize(params)
+      def initialize(params = {})
         self.comment = params.fetch(:comment, nil)
         self.status = params.fetch(:status, {})
 

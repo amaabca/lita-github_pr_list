@@ -4,7 +4,7 @@ module Lita
       attr_accessor :request, :response, :payload, :commenter, :issue_owner, :issue_title, :issue_body, :status,
                     :issue_html_url, :redis
 
-      def initialize(params)
+      def initialize(params = {})
         self.response = params.fetch(:response, nil)
         self.request = params.fetch(:request, nil)
         self.redis = params.fetch(:redis, nil)

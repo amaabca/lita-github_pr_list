@@ -3,7 +3,7 @@ module Lita
     class AliasUser
       attr_accessor :response, :redis
 
-      def initialize(params)
+      def initialize(params = {})
         self.response = params.fetch(:response, nil)
         self.redis = params.fetch(:redis, nil)
         raise "invalid params in #{self.class.name}" if response.nil? || redis.nil?
