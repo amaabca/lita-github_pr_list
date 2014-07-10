@@ -4,12 +4,12 @@ module Lita
       attr_accessor :request, :response, :payload, :commenter, :issue_owner, :issue_title, :issue_body, :status,
                     :issue_html_url, :redis
 
-      def initialize(params)
+      def initialize(params = {})
         self.response = params.fetch(:response, nil)
         self.request = params.fetch(:request, nil)
         self.redis = params.fetch(:redis, nil)
 
-        raise 'invalid params' if response.nil? || request.nil? || redis.nil?
+        raise "invalid params in #{self.class.name}" if response.nil? || request.nil? || redis.nil?
 
         # https://developer.github.com/v3/activity/events/types/#issuecommentevent
         self.payload = JSON.parse(request.body.read)

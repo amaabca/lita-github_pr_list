@@ -1,8 +1,8 @@
 module Lita
   module GithubPrList
     class Status
-      attr_accessor :comment, :status
-      attr_accessor :pass_regex, :review_regex, :fail_regex, :fixed_regex
+      attr_accessor :comment, :status,
+                    :pass_regex, :review_regex, :fail_regex, :fixed_regex
 
       PASS_REGEX = /:elephant: :elephant: :elephant:/
       REVIEW_REGEX = /:book:/
@@ -14,11 +14,11 @@ module Lita
       FAIL_EMOJI = "(poop)"
       FIXED_EMOJI = "(wave)"
 
-      def initialize(params)
+      def initialize(params = {})
         self.comment = params.fetch(:comment, nil)
         self.status = params.fetch(:status, {})
 
-        raise 'invalid params' if comment.nil?
+        raise "invalid params in #{self.class.name}" if comment.nil?
       end
 
       def comment_status

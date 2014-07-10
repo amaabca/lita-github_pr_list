@@ -2,8 +2,8 @@ require 'json'
 
 describe Lita::Handlers::GithubPrList, lita_handler: true do
   before :each do
-    ENV['GITHUB_TOKEN'] = 'aaaaaabbbbbbcccccc'
-    ENV['GITHUB_ORG'] = 'wafflesausages111111'
+    Lita.config.handlers.github_pr_list.github_organization = 'aaaaaabbbbbbcccccc'
+    Lita.config.handlers.github_pr_list.github_access_token = 'wafflesausages111111'
   end
 
   let(:agent) do
