@@ -19,7 +19,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
     github_handler.comment_hook(request, response)
 
     expect(replies.last).to include("@mcwaffle1234 your pull request: Spelling error in the README file has passed."\
-                                    "https://github.com/baxterthehacker/public-repo/issues/47")
+                                    " https://github.com/baxterthehacker/public-repo/issues/47")
   end
 
   it "should mention the github user in the room and tell them they failed" do
@@ -30,7 +30,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
     github_handler.comment_hook(request, response)
 
     expect(replies.last).to include("@mcwaffle1234 your pull request: Spelling error in the README file has failed."\
-                                    "https://github.com/baxterthehacker/public-repo/issues/47")
+                                    " https://github.com/baxterthehacker/public-repo/issues/47")
   end
 
   it "should mention the github user in the room and tell them they are reviewing" do
