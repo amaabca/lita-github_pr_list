@@ -47,5 +47,4 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
 
     expect(replies.last).to include("Removing github_pr_list webhooks from aaaaaabbbbbbcccccc, this may take awhile...")
   end
-
 end
