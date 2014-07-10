@@ -12,14 +12,23 @@ module Lita
       def self.default_config(config)
         config.github_organization = nil
         config.github_access_token = nil
+        config.web_hook = nil
       end
 
       route(/pr list/i, :list_org_pr, command: true, help: {
         "pr list" => "List open pull requests for an organization."
       })
 
+      route(/pr add hooks/i, :add_pr_hooks, command: true, help: {
+        "pr add hooks" => "Add a pr web hook to every repo in your organization."
+      })
+
+      route(/pr remove hooks/i, :remove_pr_hooks, command: true, help: {
+        "pr remove hooks" => "Remove the pr web hook from every repo in your organization."
+      })
+
       route(/pr alias user (\w*) (\w*)/i, :alias_user, command: true, help: {
-        "pr alias user <Github Username> <Hipchat Username>" => "Create an alias to match a Github username to a Hipchat Username."
+        "pr alias user <GithubUsername> <HipchatUsername>" => "Create an alias to match a Github username to a Hipchat Username."
       })
 
       http.post "/comment_hook", :comment_hook
@@ -45,6 +54,24 @@ module Lita
         end
 
         response.body << "Nothing to see here..."
+      end
+
+      def add_pr_hooks(response)
+        response.reply "Adding webhooks to #{Lita.config.handlers.github_pr_list.github_organization}, this may take "\
+                       "awhile..."
+
+        Lita::GithubPrList::WebHook.new({ github_organization: Lita.config.handlers.github_pr_list.github_organization,
+                                          github_token: Lita.config.handlers.github_pr_list.github_access_token,
+                                          web_hook: Lita.config.handlers.github_pr_list.web_hook }).add_hooks
+      end
+
+      def remove_pr_hooks(response)
+        response.reply "Removing github_pr_list webhooks from #{Lita.config.handlers.github_pr_list.github_organization},"\
+                        " this may take awhile..."
+
+        Lita::GithubPrList::WebHook.new({ github_organization: Lita.config.handlers.github_pr_list.github_organization,
+                                          github_token: Lita.config.handlers.github_pr_list.github_access_token,
+                                          web_hook: Lita.config.handlers.github_pr_list.web_hook }).remove_hooks
       end
     end
 
