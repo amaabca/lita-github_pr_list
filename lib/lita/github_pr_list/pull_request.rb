@@ -3,7 +3,7 @@ require "octokit"
 module Lita
   module GithubPrList
     class PullRequest
-      attr_accessor :organization, :github_client, :github_organization, :github_pull_requests,
+      attr_accessor :github_client, :github_organization, :github_pull_requests,
                     :summary, :response
 
       def initialize(params = {})
