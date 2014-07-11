@@ -11,7 +11,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
 
   it { routes_http(:post, "/comment_hook").to(:comment_hook) }
 
-  it "should mention the github user in the room and tell them they passed" do
+  it "mentions the github user in the room and tell them they passed" do
     request = Rack::Request.new("rack.input" => StringIO.new(issue_comment_event_passed))
     response = Rack::Response.new(['Hello'], 200, { 'Content-Type' => 'text/plain' })
 
@@ -22,7 +22,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
                                     " https://github.com/baxterthehacker/public-repo/issues/47")
   end
 
-  it "should mention the github user in the room and tell them they failed" do
+  it "mentions the github user in the room and tell them they failed" do
     request = Rack::Request.new("rack.input" => StringIO.new(issue_comment_event_failed))
     response = Rack::Response.new(['Hello'], 200, { 'Content-Type' => 'text/plain' })
 
@@ -33,7 +33,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
                                     " https://github.com/baxterthehacker/public-repo/issues/47")
   end
 
-  it "should mention the github user in the room and tell them they are reviewing" do
+  it "mentions the github user in the room and tell them they are reviewing" do
     request = Rack::Request.new("rack.input" => StringIO.new(issue_comment_event_in_review))
     response = Rack::Response.new(['Hello'], 200, { 'Content-Type' => 'text/plain' })
 
@@ -44,7 +44,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
                                     " https://github.com/baxterthehacker/public-repo/issues/47")
   end
 
-  it "should mention the github user in the room and tell them it has been fixed" do
+  it "mentions the github user in the room and tell them it has been fixed" do
     request = Rack::Request.new("rack.input" => StringIO.new(issue_comment_event_fixed))
     response = Rack::Response.new(['Hello'], 200, { 'Content-Type' => 'text/plain' })
 

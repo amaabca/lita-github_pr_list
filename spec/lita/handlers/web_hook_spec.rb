@@ -29,7 +29,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
   it { routes_command("pr add hooks").to(:add_pr_hooks) }
   it { routes_command("pr remove hooks").to(:remove_pr_hooks) }
 
-  it "add web hooks to an org's repos" do
+  it "adds web hooks to an org's repos" do
     expect_any_instance_of(Octokit::Client).to receive(:repositories).and_return(repos)
     expect_any_instance_of(Octokit::Client).to receive(:create_hook).twice.and_return(nil)
 

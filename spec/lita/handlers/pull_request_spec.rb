@@ -32,7 +32,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
 
   it { routes_command("pr list").to(:list_org_pr) }
 
-  it "display a list of pull requests" do
+  it "displays a list of pull requests" do
     expect_any_instance_of(Octokit::Client).to receive(:org_issues).and_return(two_issues)
     expect_any_instance_of(Octokit::Client).to receive(:issue_comments).and_return(issue_comments_passed, issue_comments_failed)
 
@@ -41,7 +41,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
     expect(replies.last).to include("Found a bug")
   end
 
-  it "Should display the status of the PR (pass/fail)" do
+  it "displays the status of the PR (pass/fail)" do
     expect_any_instance_of(Octokit::Client).to receive(:org_issues).and_return(two_issues)
     expect_any_instance_of(Octokit::Client).to receive(:issue_comments).and_return(issue_comments_passed, issue_comments_failed)
 
@@ -51,7 +51,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
     expect(replies.last).to include("waffles (poop) Found a waffle https://github.com/octocat/Hello-World/pull/1347")
   end
 
-  it "Should display the status of the PR (in review/fixed)" do
+  it "displays the status of the PR (in review/fixed)" do
     expect_any_instance_of(Octokit::Client).to receive(:org_issues).and_return(two_issues)
     expect_any_instance_of(Octokit::Client).to receive(:issue_comments).and_return(issue_comments_in_review, issue_comments_fixed)
 
@@ -61,7 +61,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
     expect(replies.last).to include("waffles (wave) Found a waffle https://github.com/octocat/Hello-World/pull/1347")
   end
 
-  it "should display the status of the PR (new)" do
+  it "displays the status of the PR (new)" do
     expect_any_instance_of(Octokit::Client).to receive(:org_issues).and_return(one_issue)
     expect_any_instance_of(Octokit::Client).to receive(:issue_comments).and_return(issue_comments_new)
 

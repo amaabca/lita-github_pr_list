@@ -4,7 +4,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
     Lita.config.handlers.github_pr_list.github_access_token = 'wafflesausages111111'
   end
 
-  it "should map the github name to the hipchat username (mention)" do
+  it "maps the github name to the hipchat username (mention)" do
     send_command("pr alias user mcwaffle mcrib")
 
     expect(replies.last).to include("Mapped mcwaffle to mcrib")
