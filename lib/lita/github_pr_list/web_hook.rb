@@ -49,6 +49,7 @@ module Lita
       end
 
     private
+
       def create_hook(repo_full_name)
         config = { url: "#{web_hook}", content_type: "json" }
         events = { events: ["issue_comment"] }

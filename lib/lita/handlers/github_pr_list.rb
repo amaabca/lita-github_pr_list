@@ -71,6 +71,7 @@ module Lita
       end
 
     private
+
       def github_organization
         Lita.config.handlers.github_pr_list.github_organization
       end
