@@ -57,21 +57,17 @@ module Lita
       end
 
       def add_pr_hooks(response)
-        response.reply "Adding webhooks to #{github_organization}, this may take "\
-                       "awhile..."
-
         Lita::GithubPrList::WebHook.new(github_organization: github_organization,
                                         github_token: github_access_token,
-                                        web_hook: web_hook).add_hooks
+                                        web_hook: web_hook,
+                                        response: response).add_hooks
       end
 
       def remove_pr_hooks(response)
-        response.reply "Removing github_pr_list webhooks from #{github_organization},"\
-                        " this may take awhile..."
-
         Lita::GithubPrList::WebHook.new(github_organization: github_organization,
                                         github_token: github_access_token,
-                                        web_hook: web_hook).remove_hooks
+                                        web_hook: web_hook,
+                                        response: response).remove_hooks
       end
 
     private

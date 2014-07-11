@@ -35,7 +35,8 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
 
     send_command("pr add hooks")
 
-    expect(replies.last).to include("Adding webhooks to aaaaaabbbbbbcccccc, this may take awhile...")
+    expect(replies).to include("Adding webhooks to aaaaaabbbbbbcccccc, this may take awhile...")
+    expect(replies).to include("Finished adding webhooks to aaaaaabbbbbbcccccc")
   end
 
   it "removes web hooks from an org's repos" do
@@ -45,6 +46,8 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
 
     send_command("pr remove hooks")
 
-    expect(replies.last).to include("Removing github_pr_list webhooks from aaaaaabbbbbbcccccc, this may take awhile...")
+    expect(replies).to include("Removing https://example.com/hook webhooks from aaaaaabbbbbbcccccc, this may take awhile...")
+    expect(replies).to include("Finished removing webhooks from aaaaaabbbbbbcccccc")
+
   end
 end
