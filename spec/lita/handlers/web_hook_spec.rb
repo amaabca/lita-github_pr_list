@@ -30,7 +30,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
   it { routes_command("pr remove hooks").to(:remove_pr_hooks) }
 
   it "adds web hooks to an org's repos" do
-    expect_any_instance_of(Octokit::Client).to receive(:repositories).and_return(repos)
+    expect_any_instance_of(Octokit::Client).to receive(:organization_repositories).and_return(repos)
     expect_any_instance_of(Octokit::Client).to receive(:create_hook).twice.and_return(nil)
 
     send_command("pr add hooks")
@@ -40,7 +40,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
   end
 
   it "removes web hooks from an org's repos" do
-    expect_any_instance_of(Octokit::Client).to receive(:repositories).and_return(repos)
+    expect_any_instance_of(Octokit::Client).to receive(:organization_repositories).and_return(repos)
     expect_any_instance_of(Octokit::Client).to receive(:hooks).twice.and_return(hooks)
     expect_any_instance_of(Octokit::Client).to receive(:remove_hook).twice.and_return(nil)
 
@@ -51,7 +51,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
   end
 
   it "catches exceptions when the hook already exists and continues" do
-    expect_any_instance_of(Octokit::Client).to receive(:repositories).and_return(repos)
+    expect_any_instance_of(Octokit::Client).to receive(:organization_repositories).and_return(repos)
     expect_any_instance_of(Octokit::Client).to receive(:create_hook).twice.and_return(nil)
     exception = Octokit::UnprocessableEntity.new
     allow(exception).to receive(:errors).and_return([OpenStruct.new(message: "Hook already exists on this repository")])
