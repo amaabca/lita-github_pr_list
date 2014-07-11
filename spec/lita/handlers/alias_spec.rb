@@ -11,4 +11,3 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
     expect(subject.redis.get("alias:mcwaffle")).to include("mcrib")
   end
 end
-
