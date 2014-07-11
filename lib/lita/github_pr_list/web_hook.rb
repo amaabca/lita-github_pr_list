@@ -20,7 +20,7 @@ module Lita
 
       def add_hooks
         response.reply "Adding webhooks to #{github_organization}, this may take awhile..."
-        github_client.organization_repositories(github_organization, { type: 'all' }).each do |repo|
+        github_client.organization_repositories(github_organization, type: 'all').each do |repo|
           begin
             create_hook(repo.full_name)
           rescue => ex
@@ -36,7 +36,7 @@ module Lita
       def remove_hooks
         response.reply "Removing #{web_hook} webhooks from #{github_organization}, this may take awhile..."
 
-        github_client.organization_repositories(github_organization, { type: 'all' }).each do |repo|
+        github_client.organization_repositories(github_organization, åtype: 'all').each do |repo|
           github_client.hooks(repo.full_name).each do |hook|
             if hook.config.url == web_hook
               github_client.remove_hook(repo.full_name, hook.id)
