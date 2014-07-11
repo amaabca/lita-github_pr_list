@@ -48,6 +48,18 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
 
     expect(replies).to include("Removing https://example.com/hook webhooks from aaaaaabbbbbbcccccc, this may take awhile...")
     expect(replies).to include("Finished removing webhooks from aaaaaabbbbbbcccccc")
+  end
 
+  it "catches exceptions when the hook already exists and continues" do
+    expect_any_instance_of(Octokit::Client).to receive(:repositories).and_return(repos)
+    expect_any_instance_of(Octokit::Client).to receive(:create_hook).twice.and_return(nil)
+    exception = Octokit::UnprocessableEntity.new
+    allow(exception).to receive(:errors).and_return([ OpenStruct.new( message: "Hook already exists on this repository") ])
+    allow(Lita::GithubPrList::WebHook).to receive(:create_hook).and_raise(exception)
+
+    send_command("pr add hooks")
+
+    expect(replies).to include("Adding webhooks to aaaaaabbbbbbcccccc, this may take awhile...")
+    expect(replies).to include("Finished adding webhooks to aaaaaabbbbbbcccccc")
   end
 end
