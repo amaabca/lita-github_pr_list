@@ -26,9 +26,10 @@ module Lita
 
     private
       def get_pull_requests
-        # Grab the issues and sort out the pull request issues
-        issues = github_client.org_issues(github_organization, { filter: 'all', sort: 'created' })
-
+        # Grab the issues and sort out the pull request issues by repos name
+        issues = github_client.org_issues(github_organization, { filter: 'all', sort: 'title' })
+        issues.sort! { |a,b| a.repository.name.downcase <=> b.repository.name.downcase }
+           
         issues.each do |i|
           github_pull_requests << i if i.pull_request
         end
