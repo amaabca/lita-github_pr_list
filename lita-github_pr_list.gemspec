@@ -12,6 +12,7 @@ Gem::Specification.new do |spec|
   spec.description   = %q{List open pull requests for an organization.}
   spec.homepage      = "https://github.com/amaabca/lita-github_pr_list"
   spec.license       = "MIT"
+  spec.metadata = { "lita_plugin_type" => "handler" }
 
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
