@@ -45,15 +45,15 @@ module Lita
 
       def comment_hook(request, response)
         message = Lita::GithubPrList::CommentHook.new({ request: request, response: response, redis: redis }).message
-        message_rooms(message)
+        message_rooms(message, response)
       end
 
       def check_list(request, response)
-        message = Lita::GithubPrList::Checklist.new({ request: request, response: response, redis: redis }).message
-        message_rooms(message)
+        message = Lita::GithubPrList::CheckList.new({ request: request, response: response, redis: redis, github_token: github_access_token }).message
+        message_rooms(message, response)
       end
 
-      def message_rooms(message)
+      def message_rooms(message, response)
         rooms = Lita.config.adapter.rooms
         rooms ||= [:all]
         rooms.each do |room|
