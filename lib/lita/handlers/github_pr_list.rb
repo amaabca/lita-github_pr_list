@@ -32,10 +32,10 @@ module Lita
       )
 
       http.post "/comment_hook", :comment_hook
+      http.post "/check_list", :check_list
 
       def list_org_pr(response)
-        Lita::GithubPrList::PullRequest.new({ github_organization: github_organization,
-                                              github_token: github_access_token,
+        Lita::GithubPrList::PullRequest.new({ github_organization: github_organization, github_token: github_access_token,
                                               response: response, redis: redis }).list
       end
 
@@ -45,7 +45,15 @@ module Lita
 
       def comment_hook(request, response)
         message = Lita::GithubPrList::CommentHook.new({ request: request, response: response, redis: redis }).message
+        message_rooms(message)
+      end
 
+      def check_list(request, response)
+        message = Lita::GithubPrList::Checklist.new({ request: request, response: response, redis: redis }).message
+        message_rooms(message)
+      end
+
+      def message_rooms(message)
         rooms = Lita.config.adapter.rooms
         rooms ||= [:all]
         rooms.each do |room|
@@ -57,17 +65,15 @@ module Lita
       end
 
       def add_pr_hooks(response)
-        Lita::GithubPrList::WebHook.new(github_organization: github_organization,
-                                        github_token: github_access_token,
-                                        web_hook: web_hook,
-                                        response: response).add_hooks
+        Lita::GithubPrList::WebHook.new(github_organization: github_organization, github_token: github_access_token,
+                                        web_hook: web_hook, response: response ).add_hooks
       end
 
+
+
       def remove_pr_hooks(response)
-        Lita::GithubPrList::WebHook.new(github_organization: github_organization,
-                                        github_token: github_access_token,
-                                        web_hook: web_hook,
-                                        response: response).remove_hooks
+        Lita::GithubPrList::WebHook.new(github_organization: github_organization, github_token: github_access_token,
+                                        web_hook: web_hook, response: response ).remove_hooks
       end
 
     private
