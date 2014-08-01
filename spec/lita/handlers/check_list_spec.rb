@@ -5,14 +5,15 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
   end
 
   let(:pull_request_review_comment) { File.read("spec/fixtures/pull_request_review_comment.json") }
-  let(:edit_comment_response) { Rack::Response.new([File.read("spec/fixtures/edit_comment.json")], 200, { 'Content-Type' => 'text/plain' }) }
+  let(:edit_comment_response_content) { Rack::Response.new([File.read("spec/fixtures/edit_comment.json")] }
+  let(:edit_comment_response) { edit_comment_response_content, 200, { 'Content-Type' => 'text/plain' }) }
 
   it { routes_http(:post, "/check_list").to(:check_list) }
 
   it "mentions the github user in the room and tell them the check list was added to the pull request" do
     allow_any_instance_of(Octokit::Client).to receive(:update_comment).and_return(edit_comment_response)
     request = Rack::Request.new("rack.input" => StringIO.new(pull_request_review_comment))
-    response = Rack::Response.new(['Hello'], 200, { 'Content-Type' => 'text/plain' })
+    response = Rack::Response.new(['Hello'], 200, {'Content-Type' => 'text/plain'})
 
     github_handler = Lita::Handlers::GithubPrList.new
     github_handler.check_list(request, response)

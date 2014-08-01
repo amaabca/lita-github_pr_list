@@ -49,7 +49,8 @@ module Lita
       end
 
       def check_list(request, response)
-        message = Lita::GithubPrList::CheckList.new({ request: request, response: response, redis: redis, github_token: github_access_token }).message
+        check_list_params = { request: request, response: response, redis: redis, github_token: github_access_token }
+        message = Lita::GithubPrList::CheckList.new(check_list_params).message
         message_rooms(message, response)
       end
 
@@ -66,14 +67,12 @@ module Lita
 
       def add_pr_hooks(response)
         Lita::GithubPrList::WebHook.new(github_organization: github_organization, github_token: github_access_token,
-                                        web_hook: web_hook, response: response ).add_hooks
+                                        web_hook: web_hook, response: response).add_hooks
       end
-
-
 
       def remove_pr_hooks(response)
         Lita::GithubPrList::WebHook.new(github_organization: github_organization, github_token: github_access_token,
-                                        web_hook: web_hook, response: response ).remove_hooks
+                                        web_hook: web_hook, response: response).remove_hooks
       end
 
     private

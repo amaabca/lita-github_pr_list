@@ -2,7 +2,7 @@ module Lita
   module GithubPrList
     class CheckList
       attr_accessor :request, :response, :payload, :redis, :comment_body, :comment_id, :issue_owner,
-                  :issue_title, :issue_html_url, :repo_name, :github_token, :github_client
+                    :issue_title, :issue_html_url, :repo_name, :github_token, :github_client
 
       def initialize(params = {})
         self.github_token = params.fetch(:github_token, nil)
