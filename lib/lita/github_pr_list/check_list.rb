@@ -21,18 +21,17 @@ module Lita
         self.issue_body = "#{payload["comment"]["body"]} #{list}"
         self.comment_id = payload["comment"]["id"]
         self.issue_owner = payload["pull_request"]["user"]["login"]
-        self.issue_title = payload["pull_request"]["base"]["name"]
-        self.issue_html_url = payload["pull_request"]["issue_url"]
+        self.issue_title = payload["pull_request"]["title"]
+        self.issue_html_url = payload["pull_request"]["html_url"]
       end
 
       def message
-        if payload[action] == "created" do
-          #PATCH /repos/:owner/:repo/issues/comments/:id
-          url = "https://api.github.com/repos/#{issue_owner}/#{issue_title}/issues/comments/#{comment_id}"
-          response = RestClient.post url, body: issue_body
-          return nil if response.status != 200
-          "@#{issue_owner} check list added to your pull request: #{issue_title} has passed. #{issue_html_url}"
-        end
+        #PATCH /repos/:owner/:repo/issues/comments/:id
+        url = "https://api.github.com/repos/#{issue_owner}/#{issue_title}/issues/comments/#{comment_id}"
+        response = RestClient.post url, body: issue_body
+        return nil if response.status != 200
+        "@#{issue_owner} check list added to your pull request: #{issue_title} has passed. #{issue_html_url}"
+      end
     end
   end
 end
