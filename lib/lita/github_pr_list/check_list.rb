@@ -28,12 +28,8 @@ module Lita
         self.issue_title = payload["pull_request"]["title"]
         self.issue_html_url = payload["pull_request"]["html_url"]
         self.repo_name = payload["pull_request"]["head"]["full_name"]
-      end
 
-      def message
-        edit_comment_response = github_client.update_comment("octokit/octokit.rb", comment_id.to_i, comment_body)
-        return nil if edit_comment_response.status != 200
-        "@#{issue_owner} check list was added to your pull request: #{issue_title} #{issue_html_url}"
+        github_client.update_comment("octokit/octokit.rb", comment_id.to_i, comment_body)
       end
     end
   end

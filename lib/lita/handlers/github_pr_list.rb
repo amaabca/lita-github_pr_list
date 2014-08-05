@@ -50,8 +50,7 @@ module Lita
 
       def check_list(request, response)
         check_list_params = { request: request, response: response, redis: redis, github_token: github_access_token }
-        message = Lita::GithubPrList::CheckList.new(check_list_params).message
-        message_rooms(message, response)
+        Lita::GithubPrList::CheckList.new(check_list_params)
       end
 
       def message_rooms(message, response)

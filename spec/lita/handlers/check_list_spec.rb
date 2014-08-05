@@ -5,8 +5,13 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
   end
 
   let(:pull_request_review_comment) { File.read("spec/fixtures/pull_request_review_comment.json") }
-  let(:edit_comment_response_content) { Rack::Response.new([File.read("spec/fixtures/edit_comment.json")] }
-  let(:edit_comment_response) { edit_comment_response_content, 200, { 'Content-Type' => 'text/plain' }) }
+  let(:edit_comment_response_content) { [File.read("spec/fixtures/edit_comment.json")] }
+  let(:edit_comment_response) { Rack::Response.new(edit_comment_response_content, 200, { 'Content-Type' => 'json' }) }
+  let(:check_list) { "- [ ] Change log
+    - [ ] Demo page
+    - [ ] Product owner signoff
+    - [ ] Merge into master
+    - [ ] deploy to production" }
 
   it { routes_http(:post, "/check_list").to(:check_list) }
 
@@ -17,8 +22,6 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
 
     github_handler = Lita::Handlers::GithubPrList.new
     github_handler.check_list(request, response)
-
-    expect(replies.last).to include("@baxterthehacker check list was added to your pull request: "\
-              "Update the README with new information https://github.com/baxterthehacker/public-repo/pull/48")
+    expect(edit_comment_response.body.first).to include(check_list)
   end
 end
