@@ -7,12 +7,13 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
   let(:pull_request_review_comment) { File.read("spec/fixtures/pull_request_review_comment.json") }
   let(:edit_comment_response_content) { [File.read("spec/fixtures/edit_comment.json")] }
   let(:edit_comment_response) { Rack::Response.new(edit_comment_response_content, 200, { 'Content-Type' => 'json' }) }
-  let(:check_list) { "- [ ] Change log
+  let(:check_list) do
+    "- [ ] Change log
     - [ ] Demo page
     - [ ] Product owner signoff
     - [ ] Merge into master
     - [ ] Deploy to production"
-  }
+  end
 
   it { routes_http(:post, "/check_list").to(:check_list) }
 
