@@ -66,12 +66,12 @@ module Lita
 
       def add_pr_hooks(response)
         Lita::GithubPrList::WebHook.new(github_organization: github_organization, github_token: github_access_token,
-                                        web_hook: web_hook, response: response, event_type: "issue_comment").add_hooks
+                                        web_hook: web_hook, response: response, event_type: "pull_request_review_comment").add_hooks
       end
 
       def remove_pr_hooks(response)
         Lita::GithubPrList::WebHook.new(github_organization: github_organization, github_token: github_access_token,
-                                        web_hook: web_hook, response: response, event_type: "issue_comment").remove_hooks
+                                        web_hook: web_hook, response: response, event_type: "pull_request_review_comment").remove_hooks
       end
 
     private
