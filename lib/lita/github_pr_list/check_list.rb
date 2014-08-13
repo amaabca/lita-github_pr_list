@@ -18,9 +18,8 @@ module Lita
                 - [ ] Demo page
                 - [ ] Product owner signoff
                 - [ ] Merge into master
-                - [ ] deploy to production "
+                - [ ] Deploy to production "
 
-        # https://developer.github.com/v3/activity/events/types/#issuecommentevent
         self.payload = JSON.parse(request.body.read)
         self.comment_body = "#{payload["comment"]["body"]} #{list}"
         self.comment_id = payload["comment"]["id"]
