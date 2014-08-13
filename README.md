@@ -1,5 +1,6 @@
 # lita-github_pr_list
 
+
 lita-google-images is a handler for Lita that connects up with Github and lists an organizations pull requests
 
 ## Installation
@@ -36,12 +37,12 @@ will display it, otherwise it will display :new:.
 
 ## Emoji status
 
-New - :new: - This is the default state, shown (new) if none of the other states are set.  
-Pass - :elephant: :elephant: :elephant: = (elephant)(elephant)(elephant)  
-In Review - :book: = (book)  
-Fail - :poop: = (poop)  
-Fixed - :wave:  = (wave)  
-  
+New - :new: - This is the default state, shown (new) if none of the other states are set.
+Pass - :elephant: :elephant: :elephant: = (elephant)(elephant)(elephant)
+In Review - :book: = (book)
+Fail - :poop: = (poop)
+Fixed - :wave:  = (wave)
+
 ## Contributing
 
 1. Fork it ( https://github.com/amaabca/lita-github_pr_list/fork )
