@@ -10,7 +10,7 @@ module Lita
         self.github_organization = params.fetch(:github_organization, nil)
         self.web_hook = params.fetch(:web_hook, nil)
         self.response = params.fetch(:response, nil)
-        self.event_type = params.fetch(:response, nil)
+        self.event_type = params.fetch(:event_type, nil)
 
         if github_token.nil? || github_organization.nil? || web_hook.nil? || response.nil? || event_type.nil?
           raise "invalid params in #{self.class.name}"

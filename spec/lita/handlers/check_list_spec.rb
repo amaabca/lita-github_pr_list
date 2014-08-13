@@ -11,7 +11,8 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
     - [ ] Demo page
     - [ ] Product owner signoff
     - [ ] Merge into master
-    - [ ] deploy to production" }
+    - [ ] Deploy to production"
+  }
 
   it { routes_http(:post, "/check_list").to(:check_list) }
 
