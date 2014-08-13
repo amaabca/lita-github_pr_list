@@ -1,8 +1,8 @@
 module Lita
   module GithubPrList
     class CheckList
-      attr_accessor :request, :response, :payload, :redis, :comment_body, :comment_id, :issue_owner,
-                    :issue_title, :issue_html_url, :repo_name, :github_token, :github_client
+      attr_accessor :request, :response, :payload, :redis, :repo_name, :comment_body,
+                    :title, :id, :github_token, :github_client
 
       def initialize(params = {})
         self.github_token = params.fetch(:github_token, nil)
@@ -21,14 +21,13 @@ module Lita
                 - [ ] Deploy to production "
 
         self.payload = JSON.parse(request.body.read)
-        self.comment_body = "#{payload["comment"]["body"]} #{list}"
-        self.comment_id = payload["comment"]["id"]
-        self.issue_owner = payload["pull_request"]["user"]["login"]
-        self.issue_title = payload["pull_request"]["title"]
-        self.issue_html_url = payload["pull_request"]["html_url"]
-        self.repo_name = payload["pull_request"]["head"]["full_name"]
+        self.repo_name = payload["pull_request"]["head"]["repo"]["full_name"]
+        self.comment_body = "#{payload["pull_request"]["body"]} #{list}"
+        self.title = payload["pull_request"]["title"]
+        self.id = payload["number"]
 
-        github_client.update_comment("octokit/octokit.rb", comment_id.to_i, comment_body)
+        #@client.update_pull_request('octokit/octokit.rb', 67, 'new title', 'updated body', 'closed')
+        github_client.update_pull_request(repo_name, id, title, comment_body, 'open') if payload["action"] == "opened"
       end
     end
   end
