@@ -26,7 +26,6 @@ module Lita
         self.title = payload["pull_request"]["title"]
         self.id = payload["number"]
 
-        #@client.update_pull_request('octokit/octokit.rb', 67, 'new title', 'updated body', 'closed')
         github_client.update_pull_request(repo_name, id, title, comment_body, 'open') if payload["action"] == "opened"
       end
     end
