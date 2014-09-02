@@ -40,6 +40,7 @@ module Lita
                                                     github_token: github_access_token,
                                                     response: response }).list
         mrs = redis.keys("gitlab_mr*").map { |key| redis.get(key) }
+
         requests = prs + mrs
         message = "I found #{requests.count} open pull requests for #{github_organization}\n"
         response.reply(message + requests.join("\n"))
@@ -83,7 +84,11 @@ module Lita
       def merge_request_action(request, response)
         payload = JSON.parse(request.body.read)
         if payload["object_kind"] == "merge_request"
-          Lita::GithubPrList::MergeRequest.new(payload["object_attributes"], redis: redis).handle
+          attributes = payload["object_attributes"]
+          Lita::GithubPrList::MergeRequest.new({ id: attributes["id"],
+                                                 title: attributes["title"],
+                                                 state: attributes["state"],
+                                                 redis: redis }).handle
         end
       end
 

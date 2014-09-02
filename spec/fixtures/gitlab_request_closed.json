@@ -13,7 +13,7 @@
         "source_project_id": 14,
         "st_commits": null,
         "st_diffs": null,
-        "state": "opened",
+        "state": "closed",
         "target_branch": "master",
         "target_project_id": 14,
         "title": "Fixed the things",

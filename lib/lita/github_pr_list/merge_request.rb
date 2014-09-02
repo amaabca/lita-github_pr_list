@@ -5,11 +5,11 @@ module Lita
     class MergeRequest
       attr_accessor :id, :title, :state, :redis
 
-      def initialize(args = {})
-        self.id = args['id']
-        self.title = args['title']
-        self.state = args['state']
-        self.redis = args[:redis]
+      def initialize(params = {})
+        self.id = params[:id]
+        self.title = params[:title]
+        self.state = params[:state]
+        self.redis = params[:redis]
       end
 
       def open?
@@ -17,7 +17,7 @@ module Lita
       end
 
       def handle
-        if merge_request.open?
+        if open?
           add_merge_request
         else
           remove_merge_request
@@ -43,11 +43,11 @@ module Lita
       end
 
       def add_merge_request
-        redis.lpush("gitlab_mr_#{id}", message)
+        redis.set("gitlab_mr_#{id}", message)
       end
 
       def remove_merge_request
-        redis.lrem("gitlab_mr_#{id}", 0, message)
+        redis.del("gitlab_mr_#{id}")
       end
     end
   end
