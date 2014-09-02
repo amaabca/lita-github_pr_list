@@ -1,5 +1,3 @@
-require "octokit"
-
 module Lita
   module GithubPrList
     class MergeRequest
