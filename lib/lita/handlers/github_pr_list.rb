@@ -36,12 +36,12 @@ module Lita
       http.post "/merge_request_action", :merge_request_action
 
       def list_org_pr(response)
-        prs = Lita::GithubPrList::PullRequest.new({ github_organization: github_organization,
-                                                    github_token: github_access_token,
-                                                    response: response }).list
-        mrs = redis.keys("gitlab_mr*").map { |key| redis.get(key) }
+        pull_requests = Lita::GithubPrList::PullRequest.new({ github_organization: github_organization,
+                                                              github_token: github_access_token,
+                                                              response: response }).list
+        merge_requests = redis.keys("gitlab_mr*").map { |key| redis.get(key) }
 
-        requests = prs + mrs
+        requests = pull_requests + merge_requests
         message = "I found #{requests.count} open pull requests for #{github_organization}\n"
         response.reply(message + requests.join("\n"))
       end
