@@ -26,7 +26,8 @@ module Lita
         self.title = payload["pull_request"]["title"]
         self.id = payload["number"]
 
-        github_client.update_pull_request(repo_name, id, title, comment_body, 'open') if payload["action"] == "opened"
+        options = { title: title, body: comment_body, state: 'open' }
+        github_client.update_pull_request(repo_name, id, options) if payload["action"] == "opened"
       end
     end
   end
