@@ -6,7 +6,6 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
 
   let(:update_pull_request_response) { File.read("spec/fixtures/update_pull_request_response.json") }
   let(:open_pull_request_response) { [File.read("spec/fixtures/open_pull_request_response.json")] }
-  #let(:open_pull_request_rack_response) { Rack::Response.new(open_pull_request_response, 200, { 'Content-Type' => 'json' }) }
   let(:check_list) do
     "- [ ] Change log - [ ] Demo page - [ ] Product owner signoff - [ ] Merge into master - [ ] Deploy to production"
   end
