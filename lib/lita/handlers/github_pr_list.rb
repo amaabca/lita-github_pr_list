@@ -11,7 +11,10 @@ module Lita
       def self.default_config(config)
         config.github_organization = nil
         config.github_access_token = nil
-        config.web_hook = nil
+        config.comment_hook_url = nil
+        config.comment_hook_event_type = nil
+        config.check_list_hook_url = nil
+        config.check_list_event_type = nil
       end
 
       route(/pr list/i, :list_org_pr, command: true,
@@ -65,13 +68,17 @@ module Lita
       end
 
       def add_pr_hooks(response)
-        Lita::GithubPrList::WebHook.new(github_organization: github_organization, github_token: github_access_token,
-                                        web_hook: web_hook, response: response, event_type: "pull_request").add_hooks
+        hook_info.each_pair do |key, val|
+          Lita::GithubPrList::WebHook.new(github_organization: github_organization, github_token: github_access_token,
+                                web_hook: val[:hook_url], response: response, event_type: val[:event_type]).add_hooks
+        end
       end
 
       def remove_pr_hooks(response)
-        Lita::GithubPrList::WebHook.new(github_organization: github_organization, github_token: github_access_token,
-                                        web_hook: web_hook, response: response, event_type: "pull_request").remove_hooks
+        hook_info.each_pair do |key, val|
+          Lita::GithubPrList::WebHook.new(github_organization: github_organization, github_token: github_access_token,
+                            web_hook: val[:hook_url], response: response, event_type: val[:event_type]).remove_hooks
+        end
       end
 
     private
@@ -79,11 +86,30 @@ module Lita
       def github_organization
         Lita.config.handlers.github_pr_list.github_organization
       end
+
       def github_access_token
         Lita.config.handlers.github_pr_list.github_access_token
       end
-      def web_hook
-        Lita.config.handlers.github_pr_list.web_hook
+
+      def hook_info
+        { comment_hook: { hook_url: comment_hook_url, event_type: comment_hook_event_type },
+          check_list_hook: { hook_url: check_list_hook_url, event_type: check_list_event_type } }
+      end
+
+      def comment_hook_url
+        Lita.config.handlers.github_pr_list.comment_hook_url
+      end
+
+      def comment_hook_event_type
+        Lita.config.handlers.github_pr_list.comment_hook_event_type
+      end
+
+      def check_list_hook_url
+        Lita.config.handlers.github_pr_list.check_list_hook_url
+      end
+
+      def check_list_event_type
+        Lita.config.handlers.github_pr_list.check_list_event_type
       end
     end
 
