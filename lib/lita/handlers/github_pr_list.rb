@@ -114,5 +114,6 @@ module Lita
     end
 
     Lita.register_handler(GithubPrList)
+
   end
 end
