@@ -36,10 +36,17 @@ module Lita
 
       http.post "/comment_hook", :comment_hook
       http.post "/check_list", :check_list
+      http.post "/merge_request_action", :merge_request_action
 
       def list_org_pr(response)
-        Lita::GithubPrList::PullRequest.new({ github_organization: github_organization, github_token: github_access_token,
-                                              response: response, redis: redis }).list
+        pull_requests = Lita::GithubPrList::PullRequest.new({ github_organization: github_organization,
+                                                              github_token: github_access_token,
+                                                              response: response }).list
+        merge_requests = redis.keys("gitlab_mr*").map { |key| redis.get(key) }
+
+        requests = pull_requests + merge_requests
+        message = "I found #{requests.count} open pull requests for #{github_organization}\n"
+        response.reply(message + requests.join("\n"))
       end
 
       def alias_user(response)
@@ -78,6 +85,17 @@ module Lita
         hook_info.each_pair do |key, val|
           Lita::GithubPrList::WebHook.new(github_organization: github_organization, github_token: github_access_token,
                             web_hook: val[:hook_url], response: response, event_type: val[:event_type]).remove_hooks
+        end
+      end
+
+      def merge_request_action(request, response)
+        payload = JSON.parse(request.body.read)
+        if payload["object_kind"] == "merge_request"
+          attributes = payload["object_attributes"]
+          Lita::GithubPrList::MergeRequest.new({ id: attributes["id"],
+                                                 title: attributes["title"],
+                                                 state: attributes["state"],
+                                                 redis: redis }).handle
         end
       end
 
