@@ -14,11 +14,8 @@ module Lita
 
         self.github_client = Octokit::Client.new(access_token: github_token, auto_paginate: true)
 
-        list = "- [ ] Change log
-                - [ ] Demo page
-                - [ ] Product owner signoff
-                - [ ] Merge into master
-                - [ ] Deploy to production "
+        list = "\n- [ ] Change log\n- [ ] Demo page\n- [ ] Product owner signoff\n"
+        list << "- [ ] Merge into master\n- [ ] Deploy to production\n"
 
         self.payload = JSON.parse(request.body.read)
         self.repo_name = payload["pull_request"]["head"]["repo"]["full_name"]
