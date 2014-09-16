@@ -29,8 +29,11 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
   let(:issue_comments_in_review) { sawyer_resource_array("spec/fixtures/issue_comments_in_review.json") }
   let(:issue_comments_fixed) { sawyer_resource_array("spec/fixtures/issue_comments_fixed.json") }
   let(:issue_comments_new) { sawyer_resource_array("spec/fixtures/issue_comments_new.json") }
+  let(:gitlab_merge_request) { OpenStruct.new(body: OpenStruct.new(read: File.read("spec/fixtures/gitlab_merge_request.json"))) }
+  let(:gitlab_request_closed) { OpenStruct.new(body: OpenStruct.new(read: File.read("spec/fixtures/gitlab_request_closed.json"))) }
 
   it { routes_command("pr list").to(:list_org_pr) }
+  it { routes_http(:post, "/merge_request_action").to(:merge_request_action) }
 
   it "displays a list of pull requests" do
     expect_any_instance_of(Octokit::Client).to receive(:org_issues).and_return(two_issues)
@@ -69,4 +72,27 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
 
     expect(replies.last).to include("waffles (new) Found a bug https://github.com/octocat/Hello-World/pull/1347")
   end
+
+  it "lists gitlab merge requests" do
+    expect_any_instance_of(Octokit::Client).to receive(:org_issues).and_return(one_issue)
+    expect_any_instance_of(Octokit::Client).to receive(:issue_comments).and_return(issue_comments_new)
+
+    subject.merge_request_action(gitlab_merge_request, nil)
+
+    send_command("pr list")
+
+    expect(replies.last).to include("rails_envs (new) Fixed the things https://gitlab.corp.ads/ama/rails_envs/merge_requests/99")
+  end
+
+  it "removes gitlab merge requests" do
+    expect_any_instance_of(Octokit::Client).to receive(:org_issues).and_return(one_issue)
+    expect_any_instance_of(Octokit::Client).to receive(:issue_comments).and_return(issue_comments_new)
+
+    subject.merge_request_action(gitlab_request_closed, nil)
+
+    send_command("pr list")
+
+    expect(replies.last).to_not include("rails_envs (new) Fixed the things https://gitlab.corp.ads/ama/rails_envs/merge_requests/99")
+  end
+
 end
