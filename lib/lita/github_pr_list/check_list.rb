@@ -2,20 +2,18 @@ module Lita
   module GithubPrList
     class CheckList
       attr_accessor :request, :response, :payload, :redis, :repo_name, :comment_body,
-                    :title, :id, :github_token, :github_client
+                    :title, :id, :github_token, :github_client, :list
 
       def initialize(params = {})
         self.github_token = params.fetch(:github_token, nil)
         self.response = params.fetch(:response, nil)
         self.request = params.fetch(:request, nil)
         self.redis = params.fetch(:redis, nil)
+        self.list = params.fetch(:list, "\n- [ ] Change log\n- [ ] Demo page\n- [ ] Product owner signoff\n")
 
         raise "invalid params in #{self.class.name}" if response.nil? || request.nil? || redis.nil?
 
         self.github_client = Octokit::Client.new(access_token: github_token, auto_paginate: true)
-
-        list = "\n- [ ] Change log\n- [ ] Demo page\n- [ ] Product owner signoff\n"
-        list << "- [ ] Merge into master\n- [ ] Deploy to production\n"
 
         self.payload = JSON.parse(request.body.read)
         self.repo_name = payload["pull_request"]["head"]["repo"]["full_name"]
