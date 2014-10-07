@@ -6,12 +6,12 @@ module Lita
 
       PASS_REGEX = /:elephant: :elephant: :elephant:/
       REVIEW_REGEX = /:book:/
-      FAIL_REGEX = /:poop:/
+      FAIL_REGEX = /:poop:|:hankey:/
       FIXED_REGEX = /:wave:/
 
       PASS_EMOJI = "(elephant)(elephant)(elephant)"
       REVIEW_EMOJI = "(book)"
-      FAIL_EMOJI = "(poop)"
+      FAIL_EMOJI = "(hankey)"
       FIXED_EMOJI = "(wave)"
 
       def initialize(params = {})
