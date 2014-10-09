@@ -51,7 +51,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
     send_command("pr list")
 
     expect(replies.last).to include("waffles (elephant)(elephant)(elephant) Found a bug https://github.com/octocat/Hello-World/pull/1347")
-    expect(replies.last).to include("waffles (poop) Found a waffle https://github.com/octocat/Hello-World/pull/1347")
+    expect(replies.last).to include("waffles (hankey) Found a waffle https://github.com/octocat/Hello-World/pull/1347")
   end
 
   it "displays the status of the PR (in review/fixed)" do
