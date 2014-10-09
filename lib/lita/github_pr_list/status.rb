@@ -11,7 +11,7 @@ module Lita
 
       PASS_EMOJI = "(elephant)(elephant)(elephant)"
       REVIEW_EMOJI = "(book)"
-      FAIL_EMOJI = "(hankey)"
+      FAIL_EMOJI = "(poop)"
       FIXED_EMOJI = "(wave)"
 
       def initialize(params = {})

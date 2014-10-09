@@ -39,7 +39,7 @@ will display it, otherwise it will display :new:.
 New - :new: - This is the default state, shown (new) if none of the other states are set.
 Pass - :elephant: :elephant: :elephant: = (elephant)(elephant)(elephant)
 In Review - :book: = (book)
-Fail - :poop: = (poop)  OR :hankey: = (hankey)
+Fail - :poop: OR :hankey: = (poop)
 Fixed - :wave:  = (wave)
 
 ## Contributing
