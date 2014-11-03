@@ -15,6 +15,8 @@ module Lita
         config.comment_hook_event_type = nil
         config.check_list_hook_url = nil
         config.check_list_event_type = nil
+        config.pull_request_open_message_hook_url = nil
+        config.pull_request_open_message_hook_event_type = nil
       end
 
       route(/pr list/i, :list_org_pr, command: true,
@@ -37,6 +39,7 @@ module Lita
       http.post "/comment_hook", :comment_hook
       http.post "/check_list", :check_list
       http.post "/merge_request_action", :merge_request_action
+      http.post "/pull_request_open_message_hook", :pull_request_open_message_hook
 
       def list_org_pr(response)
         pull_requests = Lita::GithubPrList::PullRequest.new({ github_organization: github_organization,
@@ -61,6 +64,11 @@ module Lita
       def check_list(request, response)
         check_list_params = { request: request, response: response, redis: redis, github_token: github_access_token }
         Lita::GithubPrList::CheckList.new(check_list_params)
+      end
+
+      def pull_request_open_message_hook(request, response)
+        message = Lita::GithubPrList::PullRequestOpenMessageHook.new({ request: request, response: response, redis: redis }).message
+        message_rooms(message, response)
       end
 
       def message_rooms(message, response)
@@ -111,7 +119,8 @@ module Lita
 
       def hook_info
         { comment_hook: { hook_url: comment_hook_url, event_type: comment_hook_event_type },
-          check_list_hook: { hook_url: check_list_hook_url, event_type: check_list_event_type } }
+          check_list_hook: { hook_url: check_list_hook_url, event_type: check_list_event_type },
+          pull_request_open_message_hook: { hook_url: pull_request_open_message_hook_url, event_type: pull_request_open_message_hook_event_type } }
       end
 
       def comment_hook_url
@@ -120,6 +129,14 @@ module Lita
 
       def comment_hook_event_type
         Lita.config.handlers.github_pr_list.comment_hook_event_type
+      end
+
+      def pull_request_open_message_hook_url
+        Lita.config.handlers.github_pr_list.pull_request_open_message_hook_url
+      end
+
+      def pull_request_open_message_hook_event_type
+        Lita.config.handlers.github_pr_list.pull_request_open_message_hook_event_type
       end
 
       def check_list_hook_url

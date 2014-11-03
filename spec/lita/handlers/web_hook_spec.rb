@@ -8,6 +8,8 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
     Lita.config.handlers.github_pr_list.comment_hook_event_type = 'comment_event_type'
     Lita.config.handlers.github_pr_list.check_list_hook_url = 'https://example.com/hook'
     Lita.config.handlers.github_pr_list.check_list_event_type = 'check_list_event_type'
+    Lita.config.handlers.github_pr_list.pull_request_open_message_hook_url = 'https://example.com/hook'
+    Lita.config.handlers.github_pr_list.pull_request_open_message_hook_event_type = 'pull_request_open_message_event_type'
   end
 
   let(:agent) do
