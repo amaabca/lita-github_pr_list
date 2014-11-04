@@ -2,7 +2,7 @@
 
 Bug Fixes:
 
-* Adding notification sent to Hipchat, opened and closed statuses only. ([#32][], [@darkodosenovic][])
+* Adding notification sent to Hipchat, opened status only. ([#32][], [@darkodosenovic][])
 
 
 ## 2014-10-09

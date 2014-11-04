@@ -4,7 +4,7 @@ module Lita
       attr_accessor :response, :request, :redis, :payload, :pull_request_owner, :title, :repo_name, :pull_request_status, :pull_request_html_url, :statuses
 
       def initialize(params = {})
-        self.statuses = %w(opened closed)
+        self.statuses = %w(opened)
         self.response = params.fetch(:response, nil)
         self.request = params.fetch(:request, nil)
         self.redis = params.fetch(:redis, nil)
@@ -23,8 +23,6 @@ module Lita
       def message
         if statuses.include? pull_request_status
           "@#{pull_request_owner} #{pull_request_status} pull request: '#{title}' in '#{repo_name}'. #{pull_request_html_url}'"
-        else
-          nil
         end
       end
     end
