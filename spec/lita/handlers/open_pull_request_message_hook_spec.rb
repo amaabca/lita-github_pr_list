@@ -15,6 +15,6 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
     github_handler = Lita::Handlers::GithubPrList.new
     github_handler.pull_request_open_message_hook(request, response)
 
-    expect(replies.last).to include("@baxterthehacker opened pull request: 'Update the README with new information' in 'baxterthehacker/public-repo'")
+    expect(replies.last).to include("@baxterthehacker opened pull request: 'Update the README with new information' in 'baxterthehacker/public-repo'. https://github.com/baxterthehacker/public-repo/pull/48")
   end
 end
