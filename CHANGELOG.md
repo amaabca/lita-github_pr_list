@@ -1,3 +1,10 @@
+## 2014-11-04
+
+Bug Fixes:
+
+* Adding notification sent to Hipchat, opened and closed statuses only. ([#32][], [@darkodosenovic][])
+
+
 ## 2014-10-09
 
 Bug Fixes:
@@ -20,5 +27,7 @@ Features:
 [#28]: https://github.com/amaabca/lita-github_pr_list/issues/28
 [#29]: https://github.com/amaabca/lita-github_pr_list/issues/29
 [#30]: https://github.com/amaabca/lita-github_pr_list/issues/30
+[#32]: https://github.com/amaabca/lita-github_pr_list/issues/32
 [@MathieuGilbert]: https://github.com/MathieuGilbert
+[@darkodosenovic]: https://github.com/darkodosenovic
 [@rubene]: https://github.com/rubene
