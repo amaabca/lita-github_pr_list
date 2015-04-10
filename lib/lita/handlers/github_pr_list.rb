@@ -45,6 +45,8 @@ module Lita
         pull_requests = Lita::GithubPrList::PullRequest.new({ github_organization: github_organization,
                                                               github_token: github_access_token,
                                                               response: response }).list
+
+        Lita::GithubPrList::GitlabMergeRequests.new(redis: redis).rectify
         merge_requests = redis.keys("gitlab_mr*").map { |key| redis.get(key) }
 
         requests = pull_requests + merge_requests

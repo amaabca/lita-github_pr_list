@@ -29,4 +29,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec-instafail"
   spec.add_development_dependency "simplecov"
   spec.add_development_dependency "pimpmychangelog"
+  spec.add_development_dependency "rest-client"
 end
