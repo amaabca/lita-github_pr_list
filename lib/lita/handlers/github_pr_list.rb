@@ -17,6 +17,7 @@ module Lita
       config :pull_request_open_message_hook_url
       config :pull_request_open_message_hook_event_type
       config :gitlab_api_key
+      config :gitlab_project_endpoint
 
       route(/pr list/i, :list_org_pr, command: true,
             help: { "pr list" => "List open pull requests for an organization." }
