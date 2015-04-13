@@ -8,16 +8,16 @@ module Lita
         super
       end
 
-      def self.default_config(config)
-        config.github_organization = nil
-        config.github_access_token = nil
-        config.comment_hook_url = nil
-        config.comment_hook_event_type = nil
-        config.check_list_hook_url = nil
-        config.check_list_event_type = nil
-        config.pull_request_open_message_hook_url = nil
-        config.pull_request_open_message_hook_event_type = nil
-      end
+      config :github_organization
+      config :github_access_token
+      config :comment_hook_url
+      config :comment_hook_event_type
+      config :check_list_hook_url
+      config :check_list_event_type
+      config :pull_request_open_message_hook_url
+      config :pull_request_open_message_hook_event_type
+      config :gitlab_api_key
+      config :gitlab_project_endpoint
 
       route(/pr list/i, :list_org_pr, command: true,
             help: { "pr list" => "List open pull requests for an organization." }
@@ -42,14 +42,7 @@ module Lita
       http.post "/pull_request_open_message_hook", :pull_request_open_message_hook
 
       def list_org_pr(response)
-        pull_requests = Lita::GithubPrList::PullRequest.new({ github_organization: github_organization,
-                                                              github_token: github_access_token,
-                                                              response: response }).list
-        merge_requests = redis.keys("gitlab_mr*").map { |key| redis.get(key) }
-
-        requests = pull_requests + merge_requests
-        message = "I found #{requests.count} open pull requests for #{github_organization}\n"
-        response.reply(message + requests.join("\n"))
+        response.reply(pr_list_message)
       end
 
       def alias_user(response)
@@ -84,15 +77,25 @@ module Lita
 
       def add_pr_hooks(response)
         hook_info.each_pair do |key, val|
-          Lita::GithubPrList::WebHook.new(github_organization: github_organization, github_token: github_access_token,
-                                web_hook: val[:hook_url], response: response, event_type: val[:event_type]).add_hooks
+          Lita::GithubPrList::WebHook.new(
+            github_organization: github_organization,
+            github_token: github_access_token,
+            web_hook: val[:hook_url],
+            response: response,
+            event_type: val[:event_type]
+          ).add_hooks
         end
       end
 
       def remove_pr_hooks(response)
         hook_info.each_pair do |key, val|
-          Lita::GithubPrList::WebHook.new(github_organization: github_organization, github_token: github_access_token,
-                            web_hook: val[:hook_url], response: response, event_type: val[:event_type]).remove_hooks
+          Lita::GithubPrList::WebHook.new(
+            github_organization: github_organization,
+            github_token: github_access_token,
+            web_hook: val[:hook_url],
+            response: response,
+            event_type: val[:event_type]
+          ).remove_hooks
         end
       end
 
@@ -100,51 +103,90 @@ module Lita
         payload = JSON.parse(request.body.read)
         if payload["object_kind"] == "merge_request"
           attributes = payload["object_attributes"]
-          Lita::GithubPrList::MergeRequest.new({ id: attributes["id"],
-                                                 title: attributes["title"],
-                                                 state: attributes["state"],
-                                                 redis: redis }).handle
+          Lita::GithubPrList::MergeRequest.new({
+            id: attributes["id"],
+            title: attributes["title"],
+            state: attributes["state"],
+            redis: redis
+          }).handle
         end
       end
 
     private
 
+      def handler
+        Lita.config.handlers.github_pr_list
+      end
+
       def github_organization
-        Lita.config.handlers.github_pr_list.github_organization
+        handler.github_organization
       end
 
       def github_access_token
-        Lita.config.handlers.github_pr_list.github_access_token
+        handler.github_access_token
       end
 
       def hook_info
-        { comment_hook: { hook_url: comment_hook_url, event_type: comment_hook_event_type },
-          check_list_hook: { hook_url: check_list_hook_url, event_type: check_list_event_type },
-          pull_request_open_message_hook: { hook_url: pull_request_open_message_hook_url, event_type: pull_request_open_message_hook_event_type } }
+        {
+          comment_hook: {
+            hook_url: comment_hook_url,
+            event_type: comment_hook_event_type
+          },
+          check_list_hook: {
+            hook_url: check_list_hook_url,
+            event_type: check_list_event_type
+          },
+          pull_request_open_message_hook: {
+            hook_url: pull_request_open_message_hook_url,
+            event_type: pull_request_open_message_hook_event_type
+          }
+        }
       end
 
       def comment_hook_url
-        Lita.config.handlers.github_pr_list.comment_hook_url
+        handler.comment_hook_url
       end
 
       def comment_hook_event_type
-        Lita.config.handlers.github_pr_list.comment_hook_event_type
+        handler.comment_hook_event_type
       end
 
       def pull_request_open_message_hook_url
-        Lita.config.handlers.github_pr_list.pull_request_open_message_hook_url
+        handler.pull_request_open_message_hook_url
       end
 
       def pull_request_open_message_hook_event_type
-        Lita.config.handlers.github_pr_list.pull_request_open_message_hook_event_type
+        handler.pull_request_open_message_hook_event_type
       end
 
       def check_list_hook_url
-        Lita.config.handlers.github_pr_list.check_list_hook_url
+        handler.check_list_hook_url
       end
 
       def check_list_event_type
-        Lita.config.handlers.github_pr_list.check_list_event_type
+        handler.check_list_event_type
+      end
+
+      def include_gitlab?
+        !handler.gitlab_api_key.nil?
+      end
+
+      def pull_requests
+        Lita::GithubPrList::PullRequest.new({
+          github_organization: github_organization,
+          github_token: github_access_token
+        }).list
+      end
+
+      def merge_requests
+        Lita::GithubPrList::GitlabMergeRequests.new(redis: redis).rectify if include_gitlab?
+        redis.keys("gitlab_mr*").map { |key| redis.get(key) }
+      end
+
+      def pr_list_message
+        requests = pull_requests + merge_requests
+        message = "I found #{requests.count} open pull requests for #{github_organization}\n"
+        message + requests.join("\n")
       end
     end
 

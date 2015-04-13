@@ -1,0 +1,68 @@
+[
+    {
+        "id": 41,
+        "iid": 41,
+        "project_id": 1,
+        "target_branch": "master",
+        "source_branch": "api-unicorns",
+        "title": "Api Unicorns",
+        "state": "merged",
+        "upvotes": 0,
+        "downvotes": 0,
+        "author": {
+            "id": 6,
+            "username": "mathieu.gilbert",
+            "email": "mathieu.gilbert@ama.ab.ca",
+            "name": "Mathieu Gilbert",
+            "state": "active",
+            "created_at": "2014-01-16T21:23:07.474Z"
+        },
+        "assignee": null,
+        "source_project_id": 1,
+        "target_project_id": 1
+    },
+    {
+        "id": 3,
+        "iid": 3,
+        "project_id": 1,
+        "target_branch": "master",
+        "source_branch": "remote-syslog-on-db-servers",
+        "title": "Remote Syslog On Db Servers",
+        "state": "closed",
+        "upvotes": 0,
+        "downvotes": 0,
+        "author": {
+            "id": 5,
+            "username": "jordan.babe",
+            "email": "jordan.babe@ama.ab.ca",
+            "name": "Jordan Babe",
+            "state": "active",
+            "created_at": "2014-01-16T21:22:31.114Z"
+        },
+        "assignee": null,
+        "source_project_id": 1,
+        "target_project_id": 1
+    },
+    {
+        "id": 99,
+        "iid": 1,
+        "project_id": 14,
+        "target_branch": "master",
+        "source_branch": "pie-factory",
+        "title": "Fixed the things",
+        "state": "opened",
+        "upvotes": 0,
+        "downvotes": 0,
+        "author": {
+            "id": 5,
+            "username": "jordan.babe",
+            "email": "jordan.babe@ama.ab.ca",
+            "name": "Jordan Babe",
+            "state": "active",
+            "created_at": "2014-01-16T21:22:31.114Z"
+        },
+        "assignee": null,
+        "source_project_id": 1,
+        "target_project_id": 1
+    }
+]
