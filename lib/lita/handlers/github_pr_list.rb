@@ -8,16 +8,15 @@ module Lita
         super
       end
 
-      def self.default_config(config)
-        config.github_organization = nil
-        config.github_access_token = nil
-        config.comment_hook_url = nil
-        config.comment_hook_event_type = nil
-        config.check_list_hook_url = nil
-        config.check_list_event_type = nil
-        config.pull_request_open_message_hook_url = nil
-        config.pull_request_open_message_hook_event_type = nil
-      end
+      config :github_organization
+      config :github_access_token
+      config :comment_hook_url
+      config :comment_hook_event_type
+      config :check_list_hook_url
+      config :check_list_event_type
+      config :pull_request_open_message_hook_url
+      config :pull_request_open_message_hook_event_type
+      config :gitlab_api_key
 
       route(/pr list/i, :list_org_pr, command: true,
             help: { "pr list" => "List open pull requests for an organization." }

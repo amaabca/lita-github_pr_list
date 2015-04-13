@@ -9,7 +9,7 @@ module Lita
         self.redis = args.fetch(:redis, nil)
       end
 
-      # Gitlab merge events don't always trigger the web hook. This will remove Gitlab merged MRs from redis
+      # Gitlab merge events don't always trigger the web hook. This will remove merged MRs from redis
       def rectify
         if local_merge_requests?
           closed_merge_requests.each do |closed_merge_request|
@@ -24,7 +24,7 @@ module Lita
         self.raw_response = RestClient::Request.execute(
           method: :get,
           url: "https://gitlab.corp.ads/api/v3/projects/1/merge_requests",
-          headers: { accept: 'application/xml', content_type: 'application/xml', 'PRIVATE-TOKEN' => 'GET_YOUR_OWN_TOKEN' },
+          headers: { accept: 'application/xml', content_type: 'application/xml', 'PRIVATE-TOKEN' => Lita.config.handlers.github_pr_list.gitlab_api_key },
           verify_ssl: OpenSSL::SSL::VERIFY_NONE
         )
       end
