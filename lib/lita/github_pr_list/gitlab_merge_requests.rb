@@ -24,7 +24,11 @@ module Lita
         self.raw_response = RestClient::Request.execute(
           method: :get,
           url: "https://gitlab.corp.ads/api/v3/projects/1/merge_requests",
-          headers: { accept: 'application/xml', content_type: 'application/xml', 'PRIVATE-TOKEN' => Lita.config.handlers.github_pr_list.gitlab_api_key },
+          headers: {
+            accept: 'application/xml',
+            content_type: 'application/xml',
+            'PRIVATE-TOKEN' => Lita.config.handlers.github_pr_list.gitlab_api_key
+          },
           verify_ssl: OpenSSL::SSL::VERIFY_NONE
         )
       end

@@ -4,6 +4,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
   before :each do
     Lita.config.handlers.github_pr_list.github_organization = 'aaaaaabbbbbbcccccc'
     Lita.config.handlers.github_pr_list.github_access_token = 'wafflesausages111111'
+    Lita.config.handlers.github_pr_list.gitlab_api_key = 'legit-token'
 
     gitlab_merge_request_response = File.read "spec/fixtures/gitlab_lookup_response.json"
     allow_any_instance_of(Lita::GithubPrList::GitlabMergeRequests).to receive(:gitlab_data).and_return(gitlab_merge_request_response)
@@ -99,6 +100,12 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
       subject.merge_request_action(gitlab_request_closed, nil)
       send_command("pr list")
       expect(replies.last).to_not include("rails_envs (new) Fixed the things https://gitlab.corp.ads/ama/rails_envs/merge_requests/3")
+    end
+
+    it "doesn't call #rectify if Gitlab is disabled" do
+      Lita.config.handlers.github_pr_list.gitlab_api_key = nil
+      expect_any_instance_of(Lita::GithubPrList::GitlabMergeRequests).to_not receive(:rectify)
+      send_command("pr list")
     end
   end
 end
