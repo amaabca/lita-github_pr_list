@@ -23,7 +23,7 @@ module Lita
       def gitlab_data
         self.raw_response = RestClient::Request.execute(
           method: :get,
-          url: Lita.config.handlers.github_pr_list.gitlab_project_endpoint + "/merge_requests",
+          url: "#{Lita.config.handlers.github_pr_list.gitlab_project_endpoint}/merge_requests",
           headers: {
             accept: 'application/xml',
             content_type: 'application/xml',
