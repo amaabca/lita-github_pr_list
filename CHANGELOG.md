@@ -2,7 +2,7 @@
 
 Bug Fixes:
 
-* Reverting changes made to sync with Gitlab. ([#36][], [@MathieuGilbert][])
+* Incrementing gem version, as rubygems doesn't let you push old versions. ([#37][], [@MathieuGilbert][])
 
 ## 2015-04-14
 
@@ -48,7 +48,7 @@ Features:
 [#32]: https://github.com/amaabca/lita-github_pr_list/issues/32
 [#33]: https://github.com/amaabca/lita-github_pr_list/issues/33
 [#35]: https://github.com/amaabca/lita-github_pr_list/issues/35
-[#36]: https://github.com/amaabca/lita-github_pr_list/issues/36
+[#37]: https://github.com/amaabca/lita-github_pr_list/issues/37
 [@MathieuGilbert]: https://github.com/MathieuGilbert
 [@darkodosenovic]: https://github.com/darkodosenovic
 [@rubene]: https://github.com/rubene
