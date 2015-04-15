@@ -21,7 +21,6 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "lita"
   spec.add_runtime_dependency "octokit", "~> 3.0"
-  spec.add_runtime_dependency "rest-client"
 
   spec.add_development_dependency "bundler", "~> 1.6"
   spec.add_development_dependency "rake"

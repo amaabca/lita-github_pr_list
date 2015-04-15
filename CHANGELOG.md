@@ -1,3 +1,9 @@
+## 2015-04-15
+
+Bug Fixes:
+
+* Reverting changes made to sync with Gitlab. ([#36][], [@MathieuGilbert][])
+
 ## 2015-04-14
 
 Bug Fixes:
@@ -42,6 +48,7 @@ Features:
 [#32]: https://github.com/amaabca/lita-github_pr_list/issues/32
 [#33]: https://github.com/amaabca/lita-github_pr_list/issues/33
 [#35]: https://github.com/amaabca/lita-github_pr_list/issues/35
+[#36]: https://github.com/amaabca/lita-github_pr_list/issues/36
 [@MathieuGilbert]: https://github.com/MathieuGilbert
 [@darkodosenovic]: https://github.com/darkodosenovic
 [@rubene]: https://github.com/rubene

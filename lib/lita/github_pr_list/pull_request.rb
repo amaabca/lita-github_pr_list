@@ -3,14 +3,15 @@ require "octokit"
 module Lita
   module GithubPrList
     class PullRequest
-      attr_accessor :github_client, :github_organization, :github_pull_requests
+      attr_accessor :github_client, :github_organization, :github_pull_requests, :response
 
       def initialize(params = {})
+        self.response = params.fetch(:response, nil)
         github_token = params.fetch(:github_token, nil)
         self.github_organization = params.fetch(:github_organization, nil)
         self.github_pull_requests = []
 
-        raise "invalid params in #{self.class.name}" if github_token.nil? || github_organization.nil?
+        raise "invalid params in #{self.class.name}" if response.nil? || github_token.nil? || github_organization.nil?
 
         self.github_client = Octokit::Client.new(access_token: github_token, auto_paginate: true)
       end
