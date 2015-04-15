@@ -1,3 +1,21 @@
+## 2015-04-15
+
+Bug Fixes:
+
+* Reverting changes made to sync with Gitlab. ([#36][], [@MathieuGilbert][])
+
+## 2015-04-14
+
+Bug Fixes:
+
+* Updating syntax on Lita.adapters to match Lita 5 syntax (now used in main Lita app). ([#35][], [@MathieuGilbert][])
+
+## 2015-04-10
+
+Features:
+
+* Querying Gitlab's API for a list of merge requests when "pr list" command is made, to clear out the merge events we didn't get a webhook call for. ([#33][], [@MathieuGilbert][])
+
 ## 2014-11-04
 
 Bug Fixes:
@@ -28,6 +46,9 @@ Features:
 [#29]: https://github.com/amaabca/lita-github_pr_list/issues/29
 [#30]: https://github.com/amaabca/lita-github_pr_list/issues/30
 [#32]: https://github.com/amaabca/lita-github_pr_list/issues/32
+[#33]: https://github.com/amaabca/lita-github_pr_list/issues/33
+[#35]: https://github.com/amaabca/lita-github_pr_list/issues/35
+[#36]: https://github.com/amaabca/lita-github_pr_list/issues/36
 [@MathieuGilbert]: https://github.com/MathieuGilbert
 [@darkodosenovic]: https://github.com/darkodosenovic
 [@rubene]: https://github.com/rubene
