@@ -1,5 +1,5 @@
 module Lita
   module GithubPrList
-    VERSION = "0.0.16"
+    VERSION = "0.0.19"
   end
 end
