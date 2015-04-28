@@ -1,3 +1,9 @@
+## 2015-04-28
+
+Bug Fixes:
+
+* Updating syntax on Lita.adapters to match Lita 5 syntax (now used in main Lita app). ([#38][], [@darkodosenovic][])
+
 ## 2015-04-15
 
 Bug Fixes:
@@ -49,6 +55,7 @@ Features:
 [#33]: https://github.com/amaabca/lita-github_pr_list/issues/33
 [#35]: https://github.com/amaabca/lita-github_pr_list/issues/35
 [#37]: https://github.com/amaabca/lita-github_pr_list/issues/37
+[#38]: https://github.com/amaabca/lita-github_pr_list/issues/38
 [@MathieuGilbert]: https://github.com/MathieuGilbert
 [@darkodosenovic]: https://github.com/darkodosenovic
 [@rubene]: https://github.com/rubene
