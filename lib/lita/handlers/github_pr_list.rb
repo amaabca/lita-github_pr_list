@@ -72,7 +72,7 @@ module Lita
       end
 
       def message_rooms(message, response)
-        rooms = Lita.config.adapter.rooms
+        rooms = Lita.config.adapters.hipchat.rooms
         rooms ||= [:all]
         rooms.each do |room|
           target = Source.new(room: room)
