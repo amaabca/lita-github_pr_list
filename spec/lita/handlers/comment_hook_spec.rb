@@ -2,6 +2,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
   before :each do
     Lita.config.handlers.github_pr_list.github_organization = 'aaaaaabbbbbbcccccc'
     Lita.config.handlers.github_pr_list.github_access_token = 'wafflesausages111111'
+    allow_any_instance_of(Lita::Configuration).to receive(:hipchat).and_return(OpenStruct.new({ rooms: ["room"] }))
   end
 
   let(:issue_comment_event_passed) { File.read("spec/fixtures/issue_comment_event_passed.json") }
