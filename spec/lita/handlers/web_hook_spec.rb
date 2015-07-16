@@ -29,8 +29,8 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
   let(:repos) { sawyer_resource_array("spec/fixtures/repository_list.json") }
   let(:hooks) { sawyer_resource_array("spec/fixtures/repository_hooks.json") }
 
-  it { routes_command("pr add hooks").to(:add_pr_hooks) }
-  it { routes_command("pr remove hooks").to(:remove_pr_hooks) }
+  it { is_expected.to route_command("pr add hooks").to(:add_pr_hooks) }
+  it { is_expected.to route_command("pr remove hooks").to(:remove_pr_hooks) }
 
   it "adds web hooks to an org's repos" do
     allow_any_instance_of(Octokit::Client).to receive(:organization_repositories).and_return(repos)

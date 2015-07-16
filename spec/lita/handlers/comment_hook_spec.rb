@@ -11,7 +11,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
   let(:issue_comment_event_in_review) { File.read("spec/fixtures/issue_comment_event_in_review.json") }
   let(:issue_comment_event_fixed) { File.read("spec/fixtures/issue_comment_event_fixed.json") }
 
-  it { routes_http(:post, "/comment_hook").to(:comment_hook) }
+  it { is_expected.to route_http(:post, "/comment_hook").to(:comment_hook) }
 
   it "mentions the github user in the room and tell them they passed" do
     request = Rack::Request.new("rack.input" => StringIO.new(issue_comment_event_passed))
