@@ -32,8 +32,8 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
   let(:gitlab_merge_request) { OpenStruct.new(body: OpenStruct.new(read: File.read("spec/fixtures/gitlab_merge_request.json"))) }
   let(:gitlab_request_closed) { OpenStruct.new(body: OpenStruct.new(read: File.read("spec/fixtures/gitlab_request_closed.json"))) }
 
-  it { routes_command("pr list").to(:list_org_pr) }
-  it { routes_http(:post, "/merge_request_action").to(:merge_request_action) }
+  it { is_expected.to route_command("pr list").to(:list_org_pr) }
+  it { is_expected.to route_http(:post, "/merge_request_action").to(:merge_request_action) }
 
   it "displays a list of pull requests" do
     expect_any_instance_of(Octokit::Client).to receive(:org_issues).and_return(two_issues)
