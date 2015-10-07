@@ -25,6 +25,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
   let(:one_issue) { sawyer_resource_array("spec/fixtures/one_org_issue_list.json") }
   let(:two_issues) { sawyer_resource_array("spec/fixtures/two_org_issue_list.json") }
   let(:issue_comments_passed) { sawyer_resource_array("spec/fixtures/issue_comments_passed.json") }
+  let(:issue_comments_passed_design) { sawyer_resource_array("spec/fixtures/issue_comments_passed_design.json") }
   let(:issue_comments_failed) { sawyer_resource_array("spec/fixtures/issue_comments_failed.json") }
   let(:issue_comments_in_review) { sawyer_resource_array("spec/fixtures/issue_comments_in_review.json") }
   let(:issue_comments_fixed) { sawyer_resource_array("spec/fixtures/issue_comments_fixed.json") }
@@ -37,7 +38,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
 
   it "displays a list of pull requests" do
     expect_any_instance_of(Octokit::Client).to receive(:org_issues).and_return(two_issues)
-    expect_any_instance_of(Octokit::Client).to receive(:issue_comments).and_return(issue_comments_passed, issue_comments_failed)
+    expect_any_instance_of(Octokit::Client).to receive(:issue_comments).and_return(issue_comments_passed, issue_comments_failed, issue_comments_passed_design)
 
     send_command("pr list")
 
@@ -46,10 +47,11 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
 
   it "displays the status of the PR (pass/fail)" do
     expect_any_instance_of(Octokit::Client).to receive(:org_issues).and_return(two_issues)
-    expect_any_instance_of(Octokit::Client).to receive(:issue_comments).and_return(issue_comments_passed, issue_comments_failed)
+    expect_any_instance_of(Octokit::Client).to receive(:issue_comments).and_return(issue_comments_passed, issue_comments_failed, issue_comments_passed_design)
 
     send_command("pr list")
 
+    expect(replies.last).to include("waffles (art)(art)(art) Found a bug https://github.com/octocat/Hello-World/pull/1347")
     expect(replies.last).to include("waffles (elephant)(elephant)(elephant) Found a bug https://github.com/octocat/Hello-World/pull/1347")
     expect(replies.last).to include("waffles (poop) Found a waffle https://github.com/octocat/Hello-World/pull/1347")
   end

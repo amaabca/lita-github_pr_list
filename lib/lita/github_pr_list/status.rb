@@ -5,11 +5,13 @@ module Lita
                     :pass_regex, :review_regex, :fail_regex, :fixed_regex
 
       PASS_REGEX = /:elephant: :elephant: :elephant:/
+      PASS_DESIGN_REGEX = /:art: :art: :art:/
       REVIEW_REGEX = /:book:/
       FAIL_REGEX = /:poop:|:hankey:/
       FIXED_REGEX = /:wave:/
 
       PASS_EMOJI = "(elephant)(elephant)(elephant)"
+      PASS_DESIGN_EMOJI = "(art)(art)(art)"
       REVIEW_EMOJI = "(book)"
       FAIL_EMOJI = "(poop)"
       FIXED_EMOJI = "(wave)"
@@ -26,6 +28,9 @@ module Lita
           when PASS_REGEX
             status[:emoji] = PASS_EMOJI
             status[:status] = "Passed"
+          when PASS_DESIGN_REGEX
+            status[:emoji] = PASS_DESIGN_EMOJI
+            status[:status] = "Passed DESIGN"
           when REVIEW_REGEX
             status[:emoji] = REVIEW_EMOJI
             status[:status] = "In Review"
