@@ -26,6 +26,8 @@ module Lita
         if !status.empty?
           if status[:emoji] == Lita::GithubPrList::Status::PASS_EMOJI
             "@#{issue_owner} your pull request: #{issue_title} has passed. #{issue_html_url}"
+          elsif status[:emoji] == Lita::GithubPrList::Status::PASS_DESIGN_EMOJI
+            "@#{issue_owner} your pull request: #{issue_title} has passed DESIGN. #{issue_html_url}"
           elsif status[:emoji] == Lita::GithubPrList::Status::REVIEW_EMOJI
             "@#{commenter} is currently reviewing: #{issue_title}. #{issue_html_url}"
           elsif status[:emoji] == Lita::GithubPrList::Status::FAIL_EMOJI
