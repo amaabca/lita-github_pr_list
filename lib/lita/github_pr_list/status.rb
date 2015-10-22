@@ -15,7 +15,7 @@ module Lita
 
       DESIGN_REVIEW_REQUIRED = "(art)"
       DEV_REVIEW_REQUIRED = "(elephant)"
-      PASS_EMOJI = "(elephant)(elephant)(elephant)"
+      PASS_DEV_EMOJI = "(elephant)(elephant)(elephant)"
       PASS_DESIGN_EMOJI = "(art)(art)(art)"
       REVIEW_EMOJI = "(book)"
       FAIL_EMOJI = "(poop)"
@@ -31,7 +31,13 @@ module Lita
       end
 
       def comment_status
-        display_comments
+        case base
+          when REVIEW_REGEX, FAIL_REGEX
+            status[:emoji] = base
+          else
+            status[:emoji] = "#{base}#{dev}#{design}"
+        end
+        status
       end
 
       def update(new_comment)
@@ -44,22 +50,12 @@ module Lita
 
     private
 
-      def display_comments
-        case base
-          when REVIEW_REGEX, FAIL_REGEX
-            status[:emoji] = base
-          else
-            status[:emoji] = "#{base}#{dev}#{design}"
-        end
-        status
-      end
-
       def parse_dev(comm)
         if !self.dev.empty?
           case comm
           when PASS_DEV_REGEX
               self.base = ""
-              self.dev = PASS_EMOJI
+              self.dev = PASS_DEV_EMOJI
             when DEV_REVIEW_REGEX, FAIL_REGEX, FIXED_REGEX
               self.dev = DEV_REVIEW_REQUIRED
           end
@@ -96,13 +92,11 @@ module Lita
       end
 
       def setup(comm)
-        self.design = DESIGN_REVIEW_REQUIRED
-        self.dev = DEV_REVIEW_REQUIRED
-        if comm.match(DESIGN_REVIEW_REGEX) && !comm.match(DEV_REVIEW_REGEX)
-          self.dev = ""
-        end
-        if comm.match(DEV_REVIEW_REGEX) && !comm.match(DESIGN_REVIEW_REGEX)
-          self.design = ""
+        self.design = DESIGN_REVIEW_REQUIRED if comm.match(DESIGN_REVIEW_REGEX)
+        self.dev = DEV_REVIEW_REQUIRED if comm.match(DEV_REVIEW_REGEX)
+        if !comm.match(DESIGN_REVIEW_REGEX) && !comm.match(DEV_REVIEW_REGEX)
+          self.dev =  DEV_REVIEW_REQUIRED
+          self.design = DESIGN_REVIEW_REQUIRED
         end
       end
     end

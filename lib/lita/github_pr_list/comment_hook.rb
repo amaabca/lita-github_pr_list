@@ -26,7 +26,7 @@ module Lita
       def message
         self.status = repo_status(payload["repository"]["full_name"], payload["issue"])
         if !status.empty?
-          if status.include? Lita::GithubPrList::Status::PASS_EMOJI
+          if status.include? Lita::GithubPrList::Status::PASS_DEV_EMOJI
             pass_dev?
           elsif status.include? Lita::GithubPrList::Status::PASS_DESIGN_EMOJI
             pass_design?
@@ -57,7 +57,7 @@ module Lita
 
       def pass_design?
         resp = "@#{issue_owner} your pull request: #{issue_title} has passed DESIGN. #{issue_html_url}"
-        if self.status.include?(Lita::GithubPrList::Status::DEV_REVIEW_REQUIRED) && !status.match(Lita::GithubPrList::Status::PASS_EMOJI)
+        if self.status.include?(Lita::GithubPrList::Status::DEV_REVIEW_REQUIRED) && !status.match(Lita::GithubPrList::Status::PASS_DEV_EMOJI)
           resp += " - You still require DEV REVIEW"
         end
         resp

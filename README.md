@@ -43,6 +43,9 @@ In Review - :book: = (book)
 Fail - :poop: OR :hankey: = (poop)
 Fixed - :wave:  = (wave)
 
+Placing an :art: or :elephant: in the initial pull request will designate the request to be for design or developers respectively
+Placing neither :art: nor :elephant:, or placing both of them will assume both design and developer review is requested
+
 ## Contributing
 
 1. Fork it ( https://github.com/amaabca/lita-github_pr_list/fork )
