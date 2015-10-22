@@ -52,9 +52,9 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
 
     send_command("pr list")
 
-    expect(replies.last).to include("waffles (art)(art)(art) Found a waffle https://github.com/octocat/Hello-World/pull/1347")
-    expect(replies.last).to include("waffles (elephant)(elephant)(elephant) Found a bug https://github.com/octocat/Hello-World/pull/1347")
-    expect(replies.last).to include("waffles (poop) Found a waffle https://github.com/octocat/Hello-World/pull/1347")
+    expect(replies.last).to include("waffles (elephant)(art)(art)(art) Found a waffle https://github.com/octocat/Hello-World/pull/1347")
+    expect(replies.last).to include("waffles (elephant)(elephant)(elephant)(art) Found a bug https://github.com/octocat/Hello-World/pull/1347")
+    expect(replies.last).to include("waffles (poop)(elephant)(art) Found a waffle https://github.com/octocat/Hello-World/pull/1347")
   end
 
   it "displays the status of the PR (in review/fixed)" do
@@ -62,9 +62,8 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
     expect_any_instance_of(Octokit::Client).to receive(:issue_comments).and_return(issue_comments_in_review, issue_comments_fixed)
 
     send_command("pr list")
-
-    expect(replies.last).to include("waffles (book) Found a bug https://github.com/octocat/Hello-World/pull/1347")
-    expect(replies.last).to include("waffles (wave) Found a waffle https://github.com/octocat/Hello-World/pull/1347")
+    expect(replies.last).to include("waffles (book)(elephant)(art) Found a bug https://github.com/octocat/Hello-World/pull/1347")
+    expect(replies.last).to include("waffles (wave)(elephant)(art) Found a waffle https://github.com/octocat/Hello-World/pull/1347")
   end
 
   it "displays the status of the PR (new)" do
@@ -73,7 +72,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
 
     send_command("pr list")
 
-    expect(replies.last).to include("waffles (new) Found a bug https://github.com/octocat/Hello-World/pull/1347")
+    expect(replies.last).to include("waffles (new)(elephant)(art) Found a bug https://github.com/octocat/Hello-World/pull/1347")
   end
 
   it "lists gitlab merge requests" do
@@ -92,7 +91,6 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
     expect_any_instance_of(Octokit::Client).to receive(:issue_comments).and_return(issue_comments_new)
 
     subject.merge_request_action(gitlab_request_closed, nil)
-
     send_command("pr list")
 
     expect(replies.last).to_not include("rails_envs (new) Fixed the things https://gitlab.corp.ads/ama/rails_envs/merge_requests/99")

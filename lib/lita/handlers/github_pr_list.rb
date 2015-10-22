@@ -54,7 +54,7 @@ module Lita
       end
 
       def comment_hook(request, response)
-        message = Lita::GithubPrList::CommentHook.new({ request: request, response: response, redis: redis }).message
+        message = Lita::GithubPrList::CommentHook.new({ request: request, response: response, redis: redis, github_organization: github_organization, github_token: github_access_token}).message
         message_rooms(message, response)
       end
 
@@ -130,7 +130,6 @@ module Lita
         Lita.config.handlers.github_pr_list.pull_request_open_message_hook_event_type
       end
     end
-
     Lita.register_handler(GithubPrList)
 
   end

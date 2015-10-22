@@ -2,13 +2,11 @@ require 'pry'
 module Lita
   module GithubPrList
     class Status
-      attr_accessor :comment, :status,
-                    :pass_regex, :review_regex, :fail_regex, :fixed_regex,
-                    :base, :dev, :design
+      attr_accessor :comment, :status, :base, :dev, :design
 
       DESIGN_REVIEW_REGEX = /:art:/
       DEV_REVIEW_REGEX = /:elephant:/
-      PASS_REGEX = /:elephant: :elephant: :elephant:/
+      PASS_DEV_REGEX = /:elephant: :elephant: :elephant:/
       PASS_DESIGN_REGEX = /:art: :art: :art:/
       REVIEW_REGEX = /:book:/
       FAIL_REGEX = /:poop:|:hankey:/
@@ -51,15 +49,15 @@ module Lita
           when REVIEW_REGEX, FAIL_REGEX
             status[:emoji] = base
           else
-            status[:emoji] = "#{base} #{dev} #{design}"
+            status[:emoji] = "#{base}#{dev}#{design}"
         end
         status
       end
 
       def parse_dev(comm)
-        if self.dev.present?
+        if !self.dev.empty?
           case comm
-            when PASS_REGEX
+          when PASS_DEV_REGEX
               self.base = ""
               self.dev = PASS_EMOJI
             when DEV_REVIEW_REGEX, FAIL_REGEX, FIXED_REGEX
@@ -69,7 +67,7 @@ module Lita
       end
 
       def parse_design(comm)
-        if self.design.present?
+        if !self.design.empty?
           case comm
             when PASS_DESIGN_REGEX
               self.base = ""
