@@ -33,9 +33,9 @@ module Lita
       def comment_status
         case base
           when REVIEW_REGEX, FAIL_REGEX
-            status[:emoji] = base
+            status = base
           else
-            status[:emoji] = "#{base}#{dev}#{design}"
+            status = "#{base}#{dev}#{design}"
         end
         status
       end
@@ -78,16 +78,12 @@ module Lita
         case comm
           when REVIEW_REGEX
             self.base = REVIEW_EMOJI
-            status[:status] = "In Review"
           when FAIL_REGEX
             self.base = FAIL_EMOJI
-            status[:status] = "Failed"
           when FIXED_REGEX
             self.base = FIXED_EMOJI
-            status[:status] = "Fixed"
           when NEW_REGEX
             self.base = NEW_EMOJI
-            status[:status] = "New"
         end
       end
 

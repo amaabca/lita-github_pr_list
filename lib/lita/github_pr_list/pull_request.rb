@@ -45,7 +45,7 @@ module Lita
         comments(repo_full_name, issue.number).each do |c|
           status = status_object.update(c.body)
         end
-        status[:emoji]
+        status
       end
 
       def comments(repo_full_name, issue_number, options = nil)
