@@ -2,7 +2,7 @@ require 'pry'
 module Lita
   module GithubPrList
     class Status
-      attr_accessor :comment, :status, :base, :dev, :design
+      attr_accessor :comment, :base, :dev, :design
 
       DESIGN_REVIEW_REGEX = /:art:/
       DEV_REVIEW_REGEX = /:elephant:/
@@ -24,7 +24,6 @@ module Lita
 
       def initialize(params = {})
         self.comment = params.fetch(:comment, nil)
-        self.status = {}
         self.base = "(new)"
         setup(comment)
         raise "invalid params in #{self.class.name}" if comment.nil?
@@ -33,16 +32,15 @@ module Lita
       def comment_status
         case base
           when REVIEW_REGEX, FAIL_REGEX
-            status = base
+            base
           else
-            status = "#{base}#{dev}#{design}"
+            "#{base}#{dev}#{design}"
         end
-        status
       end
 
       def update(new_comment)
-        parse_dev(new_comment)
-        parse_design(new_comment)
+        parse_dev(new_comment) unless self.dev.empty?
+        parse_design(new_comment) unless self.design.empty?
         parse_common(new_comment)
         self.comment = new_comment
         comment_status
@@ -51,26 +49,22 @@ module Lita
     private
 
       def parse_dev(comm)
-        if !self.dev.empty?
-          case comm
+        case comm
           when PASS_DEV_REGEX
-              self.base = ""
-              self.dev = PASS_DEV_EMOJI
-            when DEV_REVIEW_REGEX, FAIL_REGEX, FIXED_REGEX
-              self.dev = DEV_REVIEW_REQUIRED
-          end
+            self.base = ""
+            self.dev = PASS_DEV_EMOJI
+          when DEV_REVIEW_REGEX, FAIL_REGEX, FIXED_REGEX
+            self.dev = DEV_REVIEW_REQUIRED
         end
       end
 
       def parse_design(comm)
-        if !self.design.empty?
-          case comm
-            when PASS_DESIGN_REGEX
-              self.base = ""
-              self.design = PASS_DESIGN_EMOJI
-            when DESIGN_REVIEW_REGEX, FAIL_REGEX, FIXED_REGEX
-              self.design = DESIGN_REVIEW_REQUIRED
-          end
+        case comm
+          when PASS_DESIGN_REGEX
+            self.base = ""
+            self.design = PASS_DESIGN_EMOJI
+          when DESIGN_REVIEW_REGEX, FAIL_REGEX, FIXED_REGEX
+            self.design = DESIGN_REVIEW_REQUIRED
         end
       end
 
