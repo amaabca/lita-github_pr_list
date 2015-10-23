@@ -62,6 +62,7 @@ module Lita
         end
         resp
       end
+
       def repo_status(repo_full_name, issue)
         status_object = Lita::GithubPrList::Status.new(comment: ":new: " + issue["body"])
         status = status_object.comment_status
