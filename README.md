@@ -1,6 +1,6 @@
 # lita-github_pr_list
 
-lita-google-images is a handler for Lita that connects up with Github and lists an organizations pull requests
+`lita-github_pr_list` is a handler for Lita that connects up with GitHub and lists an organization's pull requests
 
 ## Installation
 
@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Configuration
 
-```
+```ruby
 Lita.configure do |config|
 ...
   config.handlers.github_pr_list.github_organization = ENV['GITHUB_ORG']
