@@ -34,19 +34,18 @@ module Lita
 
       def build_summary
         github_pull_requests.map do |pr_issue|
-          status = repo_status("#{pr_issue.repository.full_name}", pr_issue.number)
+          status = repo_status("#{pr_issue.repository.full_name}", pr_issue)
           "#{pr_issue.repository.name} #{status} #{pr_issue.title} #{pr_issue.pull_request.html_url}"
         end
       end
 
-      def repo_status(repo_full_name, issue_number)
-        status = { emoji: "(new)", status: "New" }
-
-        comments(repo_full_name, issue_number).each do |c|
-          status = Lita::GithubPrList::Status.new(comment: c.body, status: status).comment_status
+      def repo_status(repo_full_name, issue)
+        status_object = Lita::GithubPrList::Status.new(comment: ":new: " + issue.body)
+        status = status_object.comment_status
+        comments(repo_full_name, issue.number).each do |c|
+          status = status_object.update(c.body)
         end
-
-        status[:emoji]
+        status
       end
 
       def comments(repo_full_name, issue_number, options = nil)

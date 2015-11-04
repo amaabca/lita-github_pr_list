@@ -12,8 +12,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
   it "sends a message to hipchat - pull request opened" do
     request = Rack::Request.new("rack.input" => StringIO.new(open_pull_request_response.first))
     response = Rack::Response.new(['Hello'], 200, {'Content-Type' => 'text/plain'})
-
-    github_handler = Lita::Handlers::GithubPrList.new
+    github_handler = Lita::Handlers::GithubPrList.new robot
     github_handler.pull_request_open_message_hook(request, response)
 
     expect(replies.last).to include("@baxterthehacker opened pull request: 'Update the README with new information' in 'baxterthehacker/public-repo'. https://github.com/baxterthehacker/public-repo/pull/48")

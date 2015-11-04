@@ -38,9 +38,13 @@ will display it, otherwise it will display :new:.
 
 New - :new: - This is the default state, shown (new) if none of the other states are set.
 Pass - :elephant: :elephant: :elephant: = (elephant)(elephant)(elephant)
+Pass DESIGN - :art: :art: :art: = (art)(art)(art)
 In Review - :book: = (book)
 Fail - :poop: OR :hankey: = (poop)
 Fixed - :wave:  = (wave)
+
+Placing an :art: or :elephant: in the initial pull request will designate the request to be for design or developers respectively
+Placing neither :art: nor :elephant:, or placing both of them will assume both design and developer review is requested
 
 ## Contributing
 
