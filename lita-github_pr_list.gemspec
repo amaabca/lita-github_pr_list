@@ -6,8 +6,8 @@ require 'lita/github_pr_list/version'
 Gem::Specification.new do |spec|
   spec.name          = "lita-github_pr_list"
   spec.version       = Lita::GithubPrList::VERSION
-  spec.authors       = ["Michael van den Beuken", "Ruben Estevez", "Jordan Babe", "Mathieu Gilbert", "Ryan Jones", "Darko Dosenovic"]
-  spec.email         = ["michael.beuken@gmail.com", "ruben.a.estevez@gmail.com", "jorbabe@gmail.com", "mathieu.gilbert@ama.ab.ca", "ryan.michael.jones@gmail.com", "darko.dosenovic@ama.ab.ca"]
+  spec.authors       = ["Michael van den Beuken", "Ruben Estevez", "Jordan Babe", "Mathieu Gilbert", "Ryan Jones", "Darko Dosenovic", "Jonathan Weyermann", "Adam Melnyk"]
+  spec.email         = ["michael.beuken@gmail.com", "ruben.a.estevez@gmail.com", "jorbabe@gmail.com", "mathieu.gilbert@ama.ab.ca", "ryan.michael.jones@gmail.com", "darko.dosenovic@ama.ab.ca", "jonathan.weyermann@ama.ab.ca", "adam.melnyk@ama.ab.ca"]
   spec.summary       = %q{List open pull requests for an organization.}
   spec.description   = %q{List open pull requests for an organization.}
   spec.homepage      = "https://github.com/amaabca/lita-github_pr_list"
