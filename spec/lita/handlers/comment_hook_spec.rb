@@ -1,4 +1,3 @@
-require 'pry'
 describe Lita::Handlers::GithubPrList, lita_handler: true do
   let(:issue_comments_passed) { sawyer_resource_array("spec/fixtures/issue_comments_passed.json") }
   let(:issue_comments_passed_design) { sawyer_resource_array("spec/fixtures/issue_comments_passed_design.json") }
