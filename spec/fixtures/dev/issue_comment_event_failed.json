@@ -42,7 +42,7 @@
     "created_at": "2014-07-01T17:21:15Z",
     "updated_at": "2014-07-01T17:21:15Z",
     "closed_at": null,
-    "body": "It looks like you accidently spelled 'commit' with two 't's."
+    "body": ":elephant: It looks like you accidently spelled 'commit' with two 't's."
   },
   "comment": {
     "url": "https://api.github.com/repos/baxterthehacker/public-repo/issues/comments/47684681",
@@ -70,7 +70,7 @@
     },
     "created_at": "2014-07-01T17:21:15Z",
     "updated_at": "2014-07-01T17:21:15Z",
-    "body": "Passed :elephant: :elephant: :elephant:"
+    "body": "Failed.  :poop:"
   },
   "repository": {
     "id": 20000106,

@@ -1,7 +1,7 @@
 module Lita
   module GithubPrList
     class Status
-      attr_accessor :comment, :base, :dev, :design
+      attr_accessor :comment, :base, :dev, :design, :status
 
       DESIGN_REVIEW_REGEX = /:art:/
       DEV_REVIEW_REGEX = /:elephant:/
@@ -24,6 +24,8 @@ module Lita
       def initialize(params = {})
         self.comment = params.fetch(:comment, nil)
         self.base = "(new)"
+        self.status = {}
+        self.status[:last_comment] = ""
         setup(comment)
         raise "invalid params in #{self.class.name}" if comment.nil?
       end
@@ -31,16 +33,17 @@ module Lita
       def comment_status
         case base
           when REVIEW_REGEX, FAIL_REGEX
-            base
+            status[:list] = base
           else
-            "#{base}#{dev}#{design}"
+            status[:list] = "#{base}#{dev}#{design}"
         end
+        status
       end
 
       def update(new_comment)
-        parse_dev(new_comment) unless self.dev.empty?
-        parse_design(new_comment) unless self.design.empty?
-        parse_common(new_comment)
+        self.status[:last_comment] = parse_dev(new_comment) unless self.dev.nil?
+        self.status[:last_comment] += parse_design(new_comment) unless self.design.nil?
+        self.status[:last_comment] += parse_common(new_comment)
         self.comment = new_comment
         comment_status
       end
@@ -54,6 +57,8 @@ module Lita
             self.dev = PASS_DEV_EMOJI
           when DEV_REVIEW_REGEX, FAIL_REGEX, FIXED_REGEX
             self.dev = DEV_REVIEW_REQUIRED
+          else
+            ""
         end
       end
 
@@ -64,6 +69,8 @@ module Lita
             self.design = PASS_DESIGN_EMOJI
           when DESIGN_REVIEW_REGEX, FAIL_REGEX, FIXED_REGEX
             self.design = DESIGN_REVIEW_REQUIRED
+          else
+            ""
         end
       end
 
@@ -77,6 +84,8 @@ module Lita
             self.base = FIXED_EMOJI
           when NEW_REGEX
             self.base = NEW_EMOJI
+          else
+            ""
         end
       end
 
