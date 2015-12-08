@@ -145,7 +145,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
   it "it says nothing" do
     expect_any_instance_of(Octokit::Client).to receive(:issue_comments).and_return(issue_comments_trivial)
 
-    request = Rack::Request.new("rack.input" => StringIO.new(issue_comment_event_passed_dev_context))
+    request = Rack::Request.new("rack.input" => StringIO.new(issue_comment_event_passed_design_context))
     response = Rack::Response.new(['Hello'], 200, { 'Content-Type' => 'text/plain' })
 
     github_handler = Lita::Handlers::GithubPrList.new robot
