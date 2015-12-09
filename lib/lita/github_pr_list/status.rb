@@ -41,7 +41,8 @@ module Lita
       end
 
       def update(new_comment)
-        self.status[:last_comment] = parse_dev(new_comment) unless self.dev.nil?
+        self.status[:last_comment] = ""
+        self.status[:last_comment] += parse_dev(new_comment) unless self.dev.nil?
         self.status[:last_comment] += parse_design(new_comment) unless self.design.nil?
         self.status[:last_comment] += parse_common(new_comment)
         self.comment = new_comment
