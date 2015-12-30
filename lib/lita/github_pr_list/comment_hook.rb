@@ -26,16 +26,16 @@ module Lita
       def message
         self.status = repo_status(payload["repository"]["full_name"], payload["issue"])
         if !status[:last_comment].empty?
-          if status[:list].include? Lita::GithubPrList::Status::PASS_DEV_EMOJI
+          if status[:last_comment].include? Lita::GithubPrList::Status::REVIEW_EMOJI
+            "@#{commenter} is currently reviewing: #{issue_title}. #{issue_html_url}"
+          elsif status[:last_comment].include? Lita::GithubPrList::Status::FAIL_EMOJI
+            "@#{issue_owner} your pull request: #{issue_title} has failed. #{issue_html_url}"
+          elsif status[:last_comment].include? Lita::GithubPrList::Status::FIXED_EMOJI
+            "#{issue_title} has been fixed: #{issue_html_url}"
+          elsif status[:list].include? Lita::GithubPrList::Status::PASS_DEV_EMOJI
             pass_dev?
           elsif status[:list].include? Lita::GithubPrList::Status::PASS_DESIGN_EMOJI
             pass_design?
-          elsif status[:list].include? Lita::GithubPrList::Status::REVIEW_EMOJI
-            "@#{commenter} is currently reviewing: #{issue_title}. #{issue_html_url}"
-          elsif status[:list].include? Lita::GithubPrList::Status::FAIL_EMOJI
-            "@#{issue_owner} your pull request: #{issue_title} has failed. #{issue_html_url}"
-          elsif status[:list].include? Lita::GithubPrList::Status::FIXED_EMOJI
-            "#{issue_title} has been fixed: #{issue_html_url}"
           end
         else
           nil

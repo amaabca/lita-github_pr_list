@@ -6,6 +6,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
   let(:issue_comments_fixed) { sawyer_resource_array("spec/fixtures/issue_comments_fixed.json") }
   let(:issue_comments_trivial) { sawyer_resource_array("spec/fixtures/issue_comments_trivial.json") }
   let(:issue_comments_passed_both) { sawyer_resource_array("spec/fixtures/issue_comments_passed_both.json") }
+  let(:issue_comments_passed_both_book_after) { sawyer_resource_array("spec/fixtures/issue_comments_passed_both_book_after.json") }
 
   before :each do
     Lita.config.handlers.github_pr_list.github_organization = 'aaaaaabbbbbbcccccc'
@@ -87,6 +88,22 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
     expect(replies.last).to include("@mcwaffle1234 your pull request: Spelling error in the README file has passed."\
                                     " https://github.com/baxterthehacker/public-repo/issues/47")
     expect(replies.last).to_not include(" - You still require DEV REVIEW")
+  end
+  context "Design/Dev passed and book is used" do
+    it "returns - currently reviewing" do
+      expect_any_instance_of(Octokit::Client).to receive(:issue_comments).and_return(issue_comments_passed_both_book_after)
+
+      request = Rack::Request.new("rack.input" => StringIO.new(issue_comment_event_passed_design))
+      response = Rack::Response.new(['Hello'], 200, { 'Content-Type' => 'text/plain' })
+
+      github_handler = Lita::Handlers::GithubPrList.new robot
+      github_handler.comment_hook(request, response)
+
+      expect(replies.last).to include("@baxterthehacker is currently reviewing: Spelling error in the README file."\
+                                      " https://github.com/baxterthehacker/public-repo/issues/47")
+      expect(replies.last).to_not include("@mcwaffle1234 your pull request: Spelling error in the README file has passed."\
+                                      " https://github.com/baxterthehacker/public-repo/issues/47")
+    end
   end
 
 
