@@ -5,8 +5,8 @@ module Lita
 
       DESIGN_REVIEW_REGEX = /:art:/
       DEV_REVIEW_REGEX = /:elephant:/
-      PASS_DEV_REGEX = /:elephant: :elephant: :elephant:/
-      PASS_DESIGN_REGEX = /:art: :art: :art:/
+      PASS_DEV_REGEX = /:elephant:\s?:elephant:\s?:elephant:/
+      PASS_DESIGN_REGEX = /:art:\s?:art:\s?:art:/
       REVIEW_REGEX = /:book:/
       FAIL_REGEX = /:poop:|:hankey:/
       FIXED_REGEX = /:wave:/
@@ -93,8 +93,8 @@ module Lita
       def setup(comm)
         self.design = DESIGN_REVIEW_REQUIRED if comm.match(DESIGN_REVIEW_REGEX)
         self.dev = DEV_REVIEW_REQUIRED if comm.match(DEV_REVIEW_REGEX)
-        if !comm.match(DESIGN_REVIEW_REGEX) && !comm.match(DEV_REVIEW_REGEX)
-          self.dev =  DEV_REVIEW_REQUIRED
+        if dev.nil? && design.nil?
+          self.dev = DEV_REVIEW_REQUIRED
           self.design = DESIGN_REVIEW_REQUIRED
         end
       end
