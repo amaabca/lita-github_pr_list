@@ -31,6 +31,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
   end
 
   let(:issue_comment_event_passed) { File.read("spec/fixtures/issue_comment_event_passed.json") }
+  let(:issue_comment_event_passed_emoji) { File.read("spec/fixtures/issue_comment_event_passed_emoji.json") }
   let(:issue_comment_event_passed_design) { File.read("spec/fixtures/issue_comment_event_passed_design.json") }
   let(:issue_comment_event_failed) { File.read("spec/fixtures/issue_comment_event_failed.json") }
   let(:issue_comment_event_failed_hankey) { File.read("spec/fixtures/issue_comment_event_failed_hankey.json") }
@@ -48,18 +49,36 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
 
   it { is_expected.to route_http(:post, "/comment_hook").to(:comment_hook) }
 
-  it "mentions the github user in the room and tell them they passed , but they need design review" do
-    expect_any_instance_of(Octokit::Client).to receive(:issue_comments).and_return(issue_comments_passed)
+  context "comment made with text" do
+    it "mentions the github user in the room and tell them they passed , but they need design review" do
+      expect_any_instance_of(Octokit::Client).to receive(:issue_comments).and_return(issue_comments_passed)
 
-    request = Rack::Request.new("rack.input" => StringIO.new(issue_comment_event_passed))
-    response = Rack::Response.new(['Hello'], 200, { 'Content-Type' => 'text/plain' })
+      request = Rack::Request.new("rack.input" => StringIO.new(issue_comment_event_passed))
+      response = Rack::Response.new(['Hello'], 200, { 'Content-Type' => 'text/plain' })
 
-    github_handler = Lita::Handlers::GithubPrList.new robot
-    github_handler.comment_hook(request, response)
+      github_handler = Lita::Handlers::GithubPrList.new robot
+      github_handler.comment_hook(request, response)
 
-    expect(replies.last).to include("@mcwaffle1234 your pull request: Spelling error in the README file has passed DEV REVIEW."\
-                                    " https://github.com/baxterthehacker/public-repo/issues/47"\
-                                    " - You still require DESIGN REVIEW")
+      expect(replies.last).to include("@mcwaffle1234 your pull request: Spelling error in the README file has passed DEV REVIEW."\
+                                      " https://github.com/baxterthehacker/public-repo/issues/47"\
+                                      " - You still require DESIGN REVIEW")
+    end
+  end
+
+  context "comment made with emojis" do
+    it "mentions the github user in the room and tell them they passed , but they need design review" do
+      expect_any_instance_of(Octokit::Client).to receive(:issue_comments).and_return(issue_comments_passed)
+
+      request = Rack::Request.new("rack.input" => StringIO.new(issue_comment_event_passed_emoji))
+      response = Rack::Response.new(['Hello'], 200, { 'Content-Type' => 'text/plain' })
+
+      github_handler = Lita::Handlers::GithubPrList.new robot
+      github_handler.comment_hook(request, response)
+
+      expect(replies.last).to include("@mcwaffle1234 your pull request: Spelling error in the README file has passed DEV REVIEW."\
+                                      " https://github.com/baxterthehacker/public-repo/issues/47"\
+                                      " - You still require DESIGN REVIEW")
+    end
   end
 
   it "mentions the github user in the room and tell them they passed DESIGN" do
