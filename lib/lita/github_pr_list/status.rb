@@ -3,14 +3,14 @@ module Lita
     class Status
       attr_accessor :comment, :base, :dev, :design, :status
 
-      DESIGN_REVIEW_REGEX = /:art:/
-      DEV_REVIEW_REGEX = /:elephant:/
-      PASS_DEV_REGEX = /:elephant:\s?:elephant:\s?:elephant:/
-      PASS_DESIGN_REGEX = /:art:\s?:art:\s?:art:/
-      REVIEW_REGEX = /:book:/
-      FAIL_REGEX = /:poop:|:hankey:/
-      FIXED_REGEX = /:wave:/
-      NEW_REGEX = /:new:/
+      DESIGN_REVIEW_REGEX = /:art:|🎨 /
+      DEV_REVIEW_REGEX = /:elephant:|🐘 /
+      PASS_DEV_REGEX = /:elephant:\s?:elephant:\s?:elephant:|🐘 \s?🐘 \s?🐘 /
+      PASS_DESIGN_REGEX = /:art:\s?:art:\s?:art:|🎨 \s?🎨 \s?🎨 /
+      REVIEW_REGEX = /:book:|📖 /
+      FAIL_REGEX = /:poop:|:hankey:|💩 /
+      FIXED_REGEX = /:wave:|👋 /
+      NEW_REGEX = /:new:|🆕 /
 
       DESIGN_REVIEW_REQUIRED = "(art)"
       DEV_REVIEW_REQUIRED = "(elephant)"
