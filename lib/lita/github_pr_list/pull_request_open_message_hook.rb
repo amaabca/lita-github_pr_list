@@ -22,7 +22,7 @@ module Lita
 
       def message
         if statuses.include? pull_request_status
-          "@#{pull_request_owner} #{pull_request_status} pull request: '#{title}' in '#{repo_name}'. #{pull_request_html_url}'"
+          "@#{pull_request_owner} #{pull_request_status} pull request: '#{title}' in '#{repo_name}'. #{pull_request_html_url}"
         end
       end
     end
