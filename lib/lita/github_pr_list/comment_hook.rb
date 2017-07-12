@@ -27,7 +27,7 @@ module Lita
         self.status = repo_status(payload["repository"]["full_name"], payload["issue"])
         if !status[:last_comment].empty?
           if status[:last_comment].include? Lita::GithubPrList::Status::REVIEW_EMOJI
-            "@#{commenter} is currently reviewing: #{issue_title}. #{issue_html_url}"
+            "@#{commenter} is currently reviewing: #{issue_title}. #{issue_html_url}, @#{commenter}++"
           elsif status[:last_comment].include? Lita::GithubPrList::Status::FAIL_EMOJI
             "@#{issue_owner} your pull request: #{issue_title} has failed. #{issue_html_url}"
           elsif status[:last_comment].include? Lita::GithubPrList::Status::FIXED_EMOJI

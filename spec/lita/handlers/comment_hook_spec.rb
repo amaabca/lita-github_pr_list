@@ -152,7 +152,7 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
                                     " https://github.com/baxterthehacker/public-repo/issues/47")
   end
 
-  it "mentions the github user in the room and tell them they are reviewing" do
+  it "mentions the github user in the room and tell them they are reviewing and gives them karma" do
     expect_any_instance_of(Octokit::Client).to receive(:issue_comments).and_return(issue_comments_in_review)
 
     request = Rack::Request.new("rack.input" => StringIO.new(issue_comment_event_in_review))
@@ -162,7 +162,8 @@ describe Lita::Handlers::GithubPrList, lita_handler: true do
     github_handler.comment_hook(request, response)
 
     expect(replies.last).to include("@baxterthehacker is currently reviewing: Spelling error in the README file."\
-                                    " https://github.com/baxterthehacker/public-repo/issues/47")
+                                    " https://github.com/baxterthehacker/public-repo/issues/47,"\
+                                    " @baxterthehacker++")
   end
 
   it "mentions the github user in the room and tell them it has been fixed" do
