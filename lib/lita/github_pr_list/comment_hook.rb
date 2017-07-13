@@ -25,12 +25,12 @@ module Lita
 
       def message
         self.status = repo_status(payload["repository"]["full_name"], payload["issue"])
-        if !status[:last_comment].empty?
-          if status[:last_comment].include? Lita::GithubPrList::Status::REVIEW_EMOJI
+        if !issue_body.empty?
+          if issue_body.match Lita::GithubPrList::Status::REVIEW_REGEX
             "@#{commenter} is currently reviewing: #{issue_title}. #{issue_html_url}, @#{commenter}++"
-          elsif status[:last_comment].include? Lita::GithubPrList::Status::FAIL_EMOJI
+          elsif issue_body.match Lita::GithubPrList::Status::FAIL_REGEX
             "@#{issue_owner} your pull request: #{issue_title} has failed. #{issue_html_url}"
-          elsif status[:last_comment].include? Lita::GithubPrList::Status::FIXED_EMOJI
+          elsif issue_body.match Lita::GithubPrList::Status::FIXED_REGEX
             "#{issue_title} has been fixed: #{issue_html_url}"
           elsif status[:list].include? Lita::GithubPrList::Status::PASS_DEV_EMOJI
             pass_dev?
