@@ -32,9 +32,9 @@ module Lita
             "@#{issue_owner} your pull request: #{issue_title} has failed. #{issue_html_url}"
           elsif issue_body.match Lita::GithubPrList::Status::FIXED_REGEX
             "#{issue_title} has been fixed: #{issue_html_url}"
-          elsif status[:list].include? Lita::GithubPrList::Status::PASS_DEV_EMOJI
+          elsif issue_body.match? Lita::GithubPrList::Status::PASS_DEV_REGEX
             pass_dev?
-          elsif status[:list].include? Lita::GithubPrList::Status::PASS_DESIGN_EMOJI
+          elsif issue_body.match? Lita::GithubPrList::Status::PASS_DESIGN_REGEX
             pass_design?
           end
         else
