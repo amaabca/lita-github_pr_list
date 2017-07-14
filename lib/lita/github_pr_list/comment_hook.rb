@@ -1,8 +1,8 @@
 module Lita
   module GithubPrList
     class CommentHook
-      attr_accessor :request, :response, :payload, :commenter, :issue_owner, :issue_title, :issue_body, :status,
-                    :issue_html_url, :redis, :github_organization, :github_client
+      attr_accessor :request, :response, :payload, :commenter, :issue_owner, :issue_title, :issue_body,
+                    :status, :comment_body, :issue_html_url, :redis, :github_organization, :github_client
 
       def initialize(params = {})
         self.response = params.fetch(:response, nil)
@@ -20,21 +20,22 @@ module Lita
         self.issue_owner = redis.get("alias:#{payload["issue"]["user"]["login"]}") || payload["issue"]["user"]["login"]
         self.issue_title = payload["issue"]["title"]
         self.issue_html_url = payload["issue"]["html_url"]
-        self.issue_body = payload["comment"]["body"]
+        self.issue_body = payload["issue"]["body"]
+        self.comment_body = payload["comment"]["body"]
       end
 
       def message
         self.status = repo_status(payload["repository"]["full_name"], payload["issue"])
-        if !status[:last_comment].empty?
-          if status[:last_comment].include? Lita::GithubPrList::Status::REVIEW_EMOJI
+        if !comment_body.empty?
+          if comment_body.match Lita::GithubPrList::Status::REVIEW_REGEX
             "@#{commenter} is currently reviewing: #{issue_title}. #{issue_html_url}, @#{commenter}++"
-          elsif status[:last_comment].include? Lita::GithubPrList::Status::FAIL_EMOJI
+          elsif comment_body.match Lita::GithubPrList::Status::FAIL_REGEX
             "@#{issue_owner} your pull request: #{issue_title} has failed. #{issue_html_url}"
-          elsif status[:last_comment].include? Lita::GithubPrList::Status::FIXED_EMOJI
+          elsif comment_body.match Lita::GithubPrList::Status::FIXED_REGEX
             "#{issue_title} has been fixed: #{issue_html_url}"
-          elsif status[:list].include? Lita::GithubPrList::Status::PASS_DEV_EMOJI
+          elsif comment_body.match Lita::GithubPrList::Status::PASS_DEV_REGEX
             pass_dev?
-          elsif status[:list].include? Lita::GithubPrList::Status::PASS_DESIGN_EMOJI
+          elsif comment_body.match Lita::GithubPrList::Status::PASS_DESIGN_REGEX
             pass_design?
           end
         else
@@ -44,20 +45,16 @@ module Lita
 
     private
       def pass_dev?
-        if self.status[:list].include? Lita::GithubPrList::Status::PASS_DESIGN_EMOJI
-          "@#{issue_owner} your pull request: #{issue_title} has passed. #{issue_html_url}"
-        else
-          resp = "@#{issue_owner} your pull request: #{issue_title} has passed DEV REVIEW. #{issue_html_url}"
-          if self.status[:list].include?(Lita::GithubPrList::Status::DESIGN_REVIEW_REQUIRED) && !status[:list].include?(Lita::GithubPrList::Status::PASS_DESIGN_EMOJI)
-            resp += " - You still require DESIGN REVIEW"
-          end
-          resp
+        resp = "@#{issue_owner} your pull request: #{issue_title} has passed DEV REVIEW. #{issue_html_url}"
+        if issue_body.match(Lita::GithubPrList::Status::DESIGN_REVIEW_REGEX) && !status[:list].include?(Lita::GithubPrList::Status::PASS_DESIGN_EMOJI)
+          resp += " - You still require DESIGN REVIEW"
         end
+        resp
       end
 
       def pass_design?
         resp = "@#{issue_owner} your pull request: #{issue_title} has passed DESIGN. #{issue_html_url}"
-        if self.status[:list].include?(Lita::GithubPrList::Status::DEV_REVIEW_REQUIRED) && !status[:list].match(Lita::GithubPrList::Status::PASS_DEV_EMOJI)
+        if issue_body.match(Lita::GithubPrList::Status::DEV_REVIEW_REGEX) && !status[:list].include?(Lita::GithubPrList::Status::PASS_DEV_EMOJI)
           resp += " - You still require DEV REVIEW"
         end
         resp
